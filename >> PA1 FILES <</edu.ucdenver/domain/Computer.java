@@ -3,7 +3,7 @@ package edu.ucdenver.domain;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Computer {
+public class Computer extends Electronic{
     private ArrayList<String> specs;
 
     public ArrayList<String> getSpecs() {
