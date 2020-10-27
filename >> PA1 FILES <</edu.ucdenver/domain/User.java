@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class User {
-    //variables
+    //attributes
     private String displayName;
     private String email;
     private String password;
@@ -52,9 +52,9 @@ public class User {
     public ArrayList<Order> getFinalizedOrders() {
         //returns arraylist of all finalized orders
         ArrayList<Order> finalizedOrders = new ArrayList<Order>();
-        for(int i = 0; i < orders.size(); i++) {
-            if(orders.get(i).getStatus() == Order.eStatus.FINALIZED) {
-                finalizedOrders.add(orders.get(i));
+        for (Order order : orders) {
+            if (order.getStatus() == Order.eStatus.FINALIZED) {
+                finalizedOrders.add(order);
             }
         }
         return finalizedOrders;
@@ -63,16 +63,16 @@ public class User {
     public ArrayList<Order> getFinalizedOrders(LocalDate dateFinalized) {
         //returns arraylist of all finalized orders on specific date
         ArrayList<Order> finalizedOrders = new ArrayList<Order>();
-        for(int i = 0; i < orders.size(); i++) {
-            if(orders.get(i).getStatus() == Order.eStatus.FINALIZED
-                    & orders.get(i).getDateFinalized() == dateFinalized) {
-                finalizedOrders.add(orders.get(i));
+        for (Order order : orders) {
+            if (order.getStatus() == Order.eStatus.FINALIZED
+                    & order.getDateFinalized() == dateFinalized) {
+                finalizedOrders.add(order);
             }
         }
         return finalizedOrders;
     }
 
     public void createNewOrder() {
-        //TODO User.java: createNewOrder()
+        orders.add(new Order()); //order number is automatically set in Order constructor
     }
 }
