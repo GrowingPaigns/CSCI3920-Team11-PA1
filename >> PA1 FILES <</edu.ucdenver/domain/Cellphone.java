@@ -1,6 +1,6 @@
 package edu.ucdenver.domain;
 
-public class Cellphone {
+public class Cellphone extends Electronic{
     enum eOperatingSystem{IOS, ANDROID}
 
     //variables
