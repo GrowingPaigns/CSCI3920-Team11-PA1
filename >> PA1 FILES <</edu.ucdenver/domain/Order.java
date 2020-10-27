@@ -7,26 +7,30 @@ import java.util.ArrayList;
 public class Order {
     enum eStatus {IN_PROCESS, FINALIZED}
 
-    //variables
-    private String orderNumber; //FIXME should orderNumber be an int?
+    //attributes
+    private int orderNumber; //FIXME should orderNumber be an int instead of a string?
     private eStatus status;
     private LocalDate dateFinalized;
     private final ArrayList<Product> products;
+    
+    //FIXME should orderNumber be automatically set in the constructor?
+    private static int sequencer = 0;
 
     //constructors
-    public Order(String orderNumber) {
-        this.orderNumber = orderNumber;
+    public Order() {
+        sequencer += 1; //order numbers assigned sequentially
+        this.orderNumber = sequencer;
         this.status = eStatus.IN_PROCESS;
         this.dateFinalized = null;
         this.products = new ArrayList<Product>();
     }
 
     //getters and setters
-    public String getOrderNumber() {
+    public int getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(String orderNumber) {
+    public void setOrderNumber(int orderNumber) {
         this.orderNumber = orderNumber;
     }
 
