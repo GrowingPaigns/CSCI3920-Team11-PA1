@@ -1,0 +1,12 @@
+
+ž
+java:S1598"‚This file "Client.java" should be located in "edu/ucdenver/client" directory, not in "/Users/Raff/CSCI3920-Team11-PA1/src/client".(“„–£øÿÿÿÿ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(É¢••
+O
+java:S11171":Rename "output" which hides the field declared at line 16.(Æë² 
+O
+java:S11172"9Rename "input" which hides the field declared at line 17.(È³Üº
+@
+java:S14811"+Remove this unused "output" local variable.(Æë² 
+@
+java:S14812"*Remove this unused "input" local variable.(È³Üº

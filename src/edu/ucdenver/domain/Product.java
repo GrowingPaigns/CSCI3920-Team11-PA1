@@ -3,14 +3,13 @@ package edu.ucdenver.domain;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-abstract public class Product
+public abstract class Product
 {
-    private String id;
-    private String name;
-    private String brandName;
-    private String description;
-    private LocalDate dateAdded;
-    private ArrayList<Category> categories;
+    protected String id;
+    protected String name;
+    protected String brandName;
+    protected String description;
+    protected LocalDate dateAdded;
 
     public Product (String id, String name, String brandName, String description, LocalDate date)
     {
@@ -19,17 +18,6 @@ abstract public class Product
         this.brandName = brandName;
         this.description = description;
         this.dateAdded = date;
-        categories = new ArrayList<Category>(10);
-    }
-
-    public Product (String id, String name, String brandName, String description, LocalDate date, ArrayList<Category> categories)
-    {
-        this.id = id;
-        this.name = name;
-        this.brandName = brandName;
-        this.description = description;
-        this.dateAdded = date;
-        this.categories = categories;
     }
 
     //Getters and setters
@@ -48,15 +36,10 @@ abstract public class Product
     public LocalDate getDateAdded(){return this.dateAdded;}
     public void setDateAdded(LocalDate date) {this.dateAdded = date;}
 
-    public void addCategory(Category category)
+    @Override
+    public String toString()
     {
-        this.categories.add(category);
+        return String.format("NAME: %s, BRAND: %s, DESCRIPTION: %s, DATE ADDED: %s, ID: %s", name,
+                brandName, description, this.dateAdded.toString(), id);
     }
-
-    public void removeCategory (Category category)
-    {
-        this.categories.remove(category);
-    }
-
-
 }

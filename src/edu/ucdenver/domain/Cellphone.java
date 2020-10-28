@@ -1,6 +1,9 @@
 package edu.ucdenver.domain;
 
-public class Cellphone extends Electronic{
+import java.time.LocalDate;
+
+public class Cellphone extends Electronic
+{
     enum eOperatingSystem{IOS, ANDROID}
 
     //variables
@@ -8,7 +11,10 @@ public class Cellphone extends Electronic{
     private eOperatingSystem os;
     
     //constructor
-    public Cellphone(String imei, eOperatingSystem os) {
+    public Cellphone(String id, String name, String brandName, String description, LocalDate dateAdded,
+                     String serial, LocalDate[] warranty, String imei, eOperatingSystem os)
+    {
+        super (id, name, brandName, description, dateAdded, serial, warranty);
         this.imei = imei;
         this.os = os;
     }
@@ -17,7 +23,6 @@ public class Cellphone extends Electronic{
     public String getImei() {
         return imei;
     }
-
     public void setImei(String imei) {
         this.imei = imei;
     }
@@ -25,8 +30,13 @@ public class Cellphone extends Electronic{
     public eOperatingSystem getOs() {
         return os;
     }
-
     public void setOs(eOperatingSystem os) {
         this.os = os;
+    }
+
+    @Override
+    public String toString ()
+    {
+        return super.toString() + String.format("IMEI: %s, OS: %s", imei, os.toString());
     }
 }

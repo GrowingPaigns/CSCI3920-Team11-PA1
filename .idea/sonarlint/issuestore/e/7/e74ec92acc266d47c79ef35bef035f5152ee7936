@@ -1,0 +1,8 @@
+
+‹
+java:S1319
+"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(½ùÎéüÿÿÿÿ
+H
+java:S1128"-Remove this unused import 'java.util.Arrays'.(î–˜Éüÿÿÿÿ
+‹
+java:S1319"pThe type of the "specs" object should be an interface such as "List" rather than the implementation "ArrayList".(÷¥®Øúÿÿÿÿ

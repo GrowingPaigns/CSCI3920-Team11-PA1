@@ -1,8 +1,10 @@
 package edu.ucdenver.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
-public class Book extends Product{
+public class Book extends Product
+{
 
     private String title;
     private String authorName;
@@ -10,13 +12,15 @@ public class Book extends Product{
     private int numberOfPages;
 
     //constructors
-    public Book(String title, String authorName, LocalDate publicationDate, int numberOfPages) {
+    public Book(String id, String name, String brandName, String description, LocalDate dateAdded,
+                String title, String authorName, LocalDate publicationDate, int numberOfPages)
+    {
+        super (id, name, brandName, description, dateAdded);
         this.title = title;
         this.authorName = authorName;
         this.publicationDate =  publicationDate;
         this.numberOfPages = numberOfPages;
     }
-    //TODO Do we need a default constructor here?
 
     //getters and setters
     public String getTitle() {
@@ -43,5 +47,12 @@ public class Book extends Product{
     }
     public void setNumberOfPages(int numberOfPages) {
         this.numberOfPages = numberOfPages;
+    }
+
+    @Override
+    public String toString()
+    {
+        return super.toString() + String.format("%nTITLE: %s, AUTHOR: %s, DATE OF PUBLICATION: %s, NUM. OF PAGES: %d",
+                title, authorName, publicationDate.toString(), numberOfPages);
     }
 }
