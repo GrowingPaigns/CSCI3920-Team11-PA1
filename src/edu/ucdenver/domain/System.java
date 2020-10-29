@@ -1,8 +1,9 @@
 package edu.ucdenver.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class System
+public class System implements Serializable
 {
     private ArrayList<User> users;
     private ArrayList<Order> orders;

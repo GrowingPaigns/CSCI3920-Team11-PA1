@@ -5,21 +5,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import edu.ucdenver.domain.System;
 
 public class ClientWorker implements Runnable
 {
     private final Socket clientConnection;
-    //private final System system;
+    private edu.ucdenver.domain.System system;
     private final int id;
     private PrintWriter output;
     private BufferedReader input;
     private boolean keepRunningClient;
 
-    public ClientWorker (Socket clientConnection, /*System system*/ int id)
+    public ClientWorker (Socket clientConnection, edu.ucdenver.domain.System system, int id)
     {
         this.clientConnection = clientConnection;
         this.id = id;
-        //this.system = system;
+        this.system = system;
         keepRunningClient = true;
     }
 
@@ -39,7 +40,7 @@ public class ClientWorker implements Runnable
         this.input = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
     }
 
-    private void displayMessage(String message) {System.out.printf("CLIENT[%d] >> %s%n", this.id, message);}
+    private void displayMessage(String message) {java.lang.System.out.printf("CLIENT[%d] >> %s%n", this.id, message);}
 
     private void sendMessage (String message)
     {
