@@ -12,11 +12,13 @@ public class User {
     private ArrayList<Order> orders;
 
     //constructors
-    public User(String displayName, String email, String password, boolean admin) {
+    public User(String displayName, String email, String password, boolean admin)
+    {
         this.displayName = displayName;
         this.email = email;
         this.password = password;
         this.admin = admin;
+        this.orders = new ArrayList<>();
     }
 
     //methods
@@ -24,7 +26,6 @@ public class User {
     public String getDisplayName() {
         return displayName;
     }
-
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
@@ -32,7 +33,6 @@ public class User {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -44,7 +44,6 @@ public class User {
     public boolean isAdmin() {
         return admin;
     }
-
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }
@@ -60,19 +59,44 @@ public class User {
         return finalizedOrders;
     }
 
-    public ArrayList<Order> getFinalizedOrders(LocalDate dateFinalized) {
+    public ArrayList<Order> getFinalizedOrders(LocalDate[] datesFinalized)
+    {
+        if (datesFinalized.length !=2)
+            throw new IllegalArgumentException("Attempted to check date range with less than or more than 2 dates");
+        else if (!datesFinalized[0].isBefore(datesFinalized[1]))
+            throw new IllegalArgumentException("Attempted to check date range where first date came after second");
+
         //returns arraylist of all finalized orders on specific date
         ArrayList<Order> finalizedOrders = new ArrayList<Order>();
-        for (Order order : orders) {
+        for (Order order : orders)
+        {
             if (order.getStatus() == Order.eStatus.FINALIZED
-                    & order.getDateFinalized() == dateFinalized) {
+                    & order.getDateFinalized().isAfter(datesFinalized[0]) && order.getDateFinalized().isBefore(datesFinalized[1]))
+            {
                 finalizedOrders.add(order);
             }
         }
         return finalizedOrders;
     }
 
-    public void createNewOrder() {
-        orders.add(new Order()); //order number is automatically set in Order constructor
+    public void createNewOrder(User user)
+    {
+        orders.add(new Order(this)); //order number is automatically set in Order constructor
+    }
+
+    public void createNewOrder(User user, ArrayList<Product> products)
+    {
+        orders.add(new Order(this, products)); //order number is automatically set in Order constructor
+    }
+
+    public void cancelOrder(Order order)
+    {
+        for (Order o: orders)
+        {
+            if (order.getOrderNumber() == o.getOrderNumber())
+            {
+                orders.remove(o);
+            }
+        }
     }
 }

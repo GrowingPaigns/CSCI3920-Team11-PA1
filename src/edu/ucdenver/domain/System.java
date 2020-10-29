@@ -39,4 +39,16 @@ public class System
 
         return search;
     }
+
+    public void cancelOrder(Order order)
+    {
+        for (Order o: orders)
+        {
+            if (order.getOrderNumber() == o.getOrderNumber() && o.getStatus() == Order.eStatus.IN_PROCESS)
+            {
+                orders.remove(o);
+                o.getUser().cancelOrder(o);
+            }
+        }
+    }
 }
