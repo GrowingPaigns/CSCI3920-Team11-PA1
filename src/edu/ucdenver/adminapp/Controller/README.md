@@ -1,1 +1,1 @@
-Controller data for adminapp class
+Controller data for adminapp package
