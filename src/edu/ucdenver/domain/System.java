@@ -52,4 +52,13 @@ public class System implements Serializable
             }
         }
     }
+
+    public User loginUser(String username, String password)
+    {
+        User user = searchUser(username);
+        if (user != null && user.getPassword().equals(password))
+            return user;
+        else
+            return null;
+    }
 }

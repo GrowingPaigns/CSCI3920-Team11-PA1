@@ -1,9 +1,8 @@
 package edu.ucdenver.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import edu.ucdenver.domain.User;
+
+import java.io.*;
 import java.net.Socket;
 
 public class Client
@@ -15,6 +14,8 @@ public class Client
     private Socket serverConnection;
     private PrintWriter output = null;
     private BufferedReader input = null;
+    private ObjectInputStream objectInputStream = null;
+    private User user;
 
     public Client (String ip, int port)
     {
@@ -43,7 +44,6 @@ public class Client
     }
 
     public void connect()
-
     {
         displayMessage ("Attempting connection to Server");
         PrintWriter output = null;
@@ -55,6 +55,7 @@ public class Client
             this.isConnected = true;
             this.output = this.getOutputStream();
             this.input = this.getInputStream();
+            this.objectInputStream = new ObjectInputStream(serverConnection.getInputStream());
 
             getServerInitialResponse();
         }
@@ -64,6 +65,7 @@ public class Client
             this.output = null;
             this.serverConnection = null;
             this.isConnected = false;
+            this.objectInputStream = null;
             e.printStackTrace();
         }
     }
@@ -112,5 +114,33 @@ public class Client
         String srvResponse = this.input.readLine();
         displayMessage("SERVER >> " + srvResponse);
         return srvResponse;
+    }
+
+    public boolean loginUser (String username, String password)
+    {
+        String request = String.format("L|%s|%s", username, password);
+        String response = null;
+        boolean success = false;
+        try
+        {
+            response = this.sendRequest(request);
+            if (response.equals("Login Successful"))
+            {
+                try
+                {
+                    this.user = (User) objectInputStream.readObject();
+                    return success = true;
+                }
+                catch (IOException | ClassNotFoundException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+        return success;
     }
 }

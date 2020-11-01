@@ -15,10 +15,6 @@ import javax.xml.soap.Text;
 import java.io.IOException;
 
 public class Controller {
-    //General
-    public String nullString = "";
-    public String port = "8080";
-    public String ip = "127.0.0.1";
 
     //Buttons
     public Button btnExit;
@@ -43,6 +39,7 @@ public class Controller {
 
     public ListView lstUsers;
 
+    private Client client;
 
     public Controller(){
 

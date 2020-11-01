@@ -1,9 +1,10 @@
 package edu.ucdenver.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
     //attributes
     private String displayName;
     private String email;
@@ -40,6 +41,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    public String getPassword() {return this.password;}
 
     public boolean isAdmin() {
         return admin;
