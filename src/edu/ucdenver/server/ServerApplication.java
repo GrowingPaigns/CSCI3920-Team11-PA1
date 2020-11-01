@@ -69,10 +69,7 @@ public class ServerApplication
 
         try
         {
-            while (true)
-            {
-                executorService.execute(server);
-            }
+            executorService.execute(server);
         }
         catch (Exception e)
         {
@@ -90,7 +87,7 @@ public class ServerApplication
         System.out.println ("B) Start the edu.ucdenver.server");
 
         Scanner input = new Scanner(System.in);
-        String choice = input.next();
+        String choice = input.next().toUpperCase();
 
         switch (choice)
         {

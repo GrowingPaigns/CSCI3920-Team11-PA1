@@ -101,4 +101,10 @@ public class User implements Serializable {
             }
         }
     }
+
+    @Override
+    public String toString()
+    {
+        return String.format("DISPLAY NAME: %s, EMAIL: %s", this.displayName, this.email);
+    }
 }

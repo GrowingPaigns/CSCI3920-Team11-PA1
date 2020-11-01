@@ -1,5 +1,6 @@
 package edu.ucdenver.adminapp;
 
+import edu.ucdenver.client.Client;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,20 +11,22 @@ import java.io.IOException;
 
 public class AdminApp extends Application {
 
-    Stage window = null;
-
-
+    public static ScreenController screenController;
     public static void main(String[] args) {
         Application.launch(args);
     }
-
+    public static Client client = new Client();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("IP-Port.fxml"));
         primaryStage.setTitle("");
         primaryStage.setScene(new Scene(root, 720, 544));
+        screenController = new ScreenController(primaryStage.getScene());
+        screenController.addScreen("UserLogin", FXMLLoader.load(getClass().getResource("AdminLogin.fxml")));
+        screenController.addScreen("AdminApp", FXMLLoader.load(getClass().getResource("adminapp.fxml")));
+        screenController.addScreen("ip-port", FXMLLoader.load(getClass().getResource("IP-Port.fxml")));
         primaryStage.show();
-        window = primaryStage;
     }
+
 }

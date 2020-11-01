@@ -1,6 +1,7 @@
 package edu.ucdenver.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Electronic extends Product
 {
@@ -11,6 +12,19 @@ public class Electronic extends Product
                        String serial, LocalDate[] warranty) throws IllegalArgumentException
     {
         super (id, name, brandName, description, dateAdded);
+        this.serial = serial;
+        if (warranty.length != 2)
+            throw new IllegalArgumentException("Tried to set warranty without exactly 2 dates.");
+        else if (!warranty[0].isBefore(warranty[1]))
+            throw new IllegalArgumentException("The first date entered comes after the second date. Please order correctly.");
+        else
+            this.warranty = warranty;
+    }
+
+    public Electronic (String id, String name, String brandName, String description, LocalDate dateAdded,
+                       ArrayList<Category> categories, String serial, LocalDate[] warranty) throws IllegalArgumentException
+    {
+        super (id, name, brandName, description, dateAdded, categories);
         this.serial = serial;
         if (warranty.length != 2)
             throw new IllegalArgumentException("Tried to set warranty without exactly 2 dates.");

@@ -14,6 +14,13 @@ public class Computer extends Electronic
         this.specs = specs;
     }
 
+    public Computer (String id, String name, String brandName, String description, LocalDate dateAdded, String serial,
+                     ArrayList<Category> categories, LocalDate[] warranty, ArrayList<String> specs)
+    {
+        super (id, name, brandName, description, dateAdded, categories, serial, warranty);
+        this.specs = specs;
+    }
+
     public ArrayList<String> getSpecs() {
         return specs;
     }

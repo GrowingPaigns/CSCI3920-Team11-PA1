@@ -14,6 +14,7 @@ public class System implements Serializable
         users = new ArrayList<>();
         orders = new ArrayList<>();
         catalog = new Catalog();
+        users.add(new User ("admin", "admin@admin.com", "admin", true));
     }
 
     public System (ArrayList<User> users, ArrayList<Order> orders, Catalog catalog)
@@ -23,9 +24,18 @@ public class System implements Serializable
         this.catalog = catalog;
     }
 
-    public void createNewUser (String displayName, String email, String password, boolean admin)
+    public String createNewUser (String displayName, String email, String password, boolean admin)
     {
-        users.add(new User (displayName, email, password, admin));
+        String response ="";
+        if (searchUser(displayName) == null && searchUser(email) == null)
+        {
+            users.add(new User (displayName, email, password, admin));
+            response = "Successfully added user.";
+        }
+        else
+            response = "That username or email already exists.";
+
+        return response;
     }
 
     public User searchUser (String searchTerm)
@@ -61,4 +71,11 @@ public class System implements Serializable
         else
             return null;
     }
+
+    public ArrayList<User> getUsers()
+    {
+        return this.users;
+    }
+
+    public Catalog getCatalog () {return this.catalog;}
 }

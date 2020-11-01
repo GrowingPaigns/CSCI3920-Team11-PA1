@@ -22,6 +22,16 @@ public class Book extends Product
         this.numberOfPages = numberOfPages;
     }
 
+    public Book(String id, String name, String brandName, String description, LocalDate dateAdded,
+                ArrayList<Category> categories, String title, String authorName, LocalDate publicationDate, int numberOfPages)
+    {
+        super (id, name, brandName, description, dateAdded, categories);
+        this.title = title;
+        this.authorName = authorName;
+        this.publicationDate =  publicationDate;
+        this.numberOfPages = numberOfPages;
+    }
+
     //getters and setters
     public String getTitle() {
         return title;

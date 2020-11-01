@@ -1,6 +1,7 @@
 package edu.ucdenver.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Cellphone extends Electronic
 {
@@ -15,6 +16,15 @@ public class Cellphone extends Electronic
                      String serial, LocalDate[] warranty, String imei, eOperatingSystem os)
     {
         super (id, name, brandName, description, dateAdded, serial, warranty);
+        this.imei = imei;
+        this.os = os;
+    }
+
+    //constructor
+    public Cellphone(String id, String name, String brandName, String description, LocalDate dateAdded,
+                     ArrayList<Category> categories, String serial, LocalDate[] warranty, String imei, eOperatingSystem os)
+    {
+        super (id, name, brandName, description, dateAdded, categories, serial, warranty);
         this.imei = imei;
         this.os = os;
     }

@@ -10,6 +10,7 @@ public abstract class Product
     protected String brandName;
     protected String description;
     protected LocalDate dateAdded;
+    protected ArrayList<Category> categories;
 
     public Product (String id, String name, String brandName, String description, LocalDate date)
     {
@@ -18,6 +19,17 @@ public abstract class Product
         this.brandName = brandName;
         this.description = description;
         this.dateAdded = date;
+        categories = new ArrayList<>();
+    }
+
+    public Product (String id, String name, String brandName, String description, LocalDate date, ArrayList<Category> categories)
+    {
+        this.id = id;
+        this.name = name;
+        this.brandName = brandName;
+        this.description = description;
+        this.dateAdded = date;
+        this.categories = categories;
     }
 
     //Getters and setters
@@ -35,6 +47,10 @@ public abstract class Product
 
     public LocalDate getDateAdded(){return this.dateAdded;}
     public void setDateAdded(LocalDate date) {this.dateAdded = date;}
+
+    public ArrayList<Category> getCategories(){return this.categories;}
+    public void addCategory(Category category){this.categories.add(category);}
+    public void removeCategory(Category category) {this.categories.remove(category);}
 
     @Override
     public String toString()
