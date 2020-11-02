@@ -1,10 +1,7 @@
 package edu.ucdenver.adminapp;
 
 import edu.ucdenver.client.Client;
-import edu.ucdenver.domain.Category;
-import edu.ucdenver.domain.HomeProduct;
-import edu.ucdenver.domain.Product;
-import edu.ucdenver.domain.User;
+import edu.ucdenver.domain.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -84,7 +81,9 @@ public class Controller {
     public TextArea txtCategoryDescription;
     public TextField txtRemoveCategoryID;
     public ComboBox<String> comboDefaultCategory;
-
+    public Button btnAddCategory;
+    public ComboBox<Category> comboParentCategory;
+    public Tab tabCategoryManagement;
 
 
     public Controller()
@@ -92,10 +91,12 @@ public class Controller {
         //client = new Client();
         this.lstUsers = new ListView<>();
         this.treeProductCategories = new TreeView<>();
+        this.treeProductCategories.setShowRoot(true);
         this.comboDefaultCategory = new ComboBox<>();
         this.lstRemoveProducts = new ListView<>();
         this.comboProductType = new ComboBox<>();
         this.comboCellphoneOS = new ComboBox<>();
+        this.comboParentCategory = new ComboBox();
     }
 
     public void initialize ()
@@ -218,12 +219,34 @@ public class Controller {
         }
         else if (this.tabProductManagement.isSelected())
         {
-//            TreeItem<Category> root = AdminApp.client.getCategories().getRoot();
-//            treeProductCategories = new TreeView<>(root);
+            TreeItem<Category> root = createTreeviewStructure(AdminApp.client.getCategories());
+            TreeItem<Category> newItem = new TreeItem<>();
+            newItem.setValue(new Category("Me", "me", "me"));
+            root.getChildren().add(newItem);
+            treeProductCategories.setRoot(root);
 
             lstRemoveProducts.setItems(FXCollections.observableArrayList(AdminApp.client.fetchProducts()));
             lstRemoveProducts.refresh();
         }
+        else if (this.tabCategoryManagement.isSelected())
+        {
+            CategoryNode categories = AdminApp.client.getCategories();
+            ArrayList<Category> arrayList = categories.toArrayList(categories);
+            comboParentCategory.setItems(FXCollections.observableArrayList(arrayList));
+        }
+    }
+
+    private TreeItem<Category> createTreeviewStructure(CategoryNode tree) {
+        TreeItem<Category> root = new TreeItem<>();
+        root.setValue(tree.getData());
+        if (!tree.isLeaf())
+        {
+            for (CategoryNode node: tree.getChildren())
+                root.getChildren().add(createTreeviewStructure(node));
+            return root;
+        }
+        else
+            return root;
     }
 
     public void addProduct(ActionEvent actionEvent) {
@@ -470,6 +493,35 @@ public class Controller {
         }
         Stage stage = (Stage) txtElectronicSerial.getScene().getWindow();
         stage.close();
+    }
+
+    public void addCategory(ActionEvent actionEvent) {
+        if (txtCategoryID.getText() != null && txtCategoryName.getText() != null && txtCategoryDescription.getParagraphs() != null)
+        {
+            if (AdminApp.client.addCategory(txtCategoryID.getText(), txtCategoryName.getText(), txtCategoryDescription.getParagraphs().toString(),
+                    comboParentCategory.getSelectionModel().getSelectedItem()))
+            {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Category Added Successfully");
+                txtCategoryID.clear();
+                txtCategoryName.clear();
+                txtCategoryDescription.clear();
+                comboParentCategory.getSelectionModel().select(null);
+                alert.show();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "That Category ID already exists");
+                txtProductName.clear();
+                txtProductBrandName.clear();
+                txtProductDescription.clear();
+                alert.show();
+            }
+
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Fill out all fields");
+            alert.show();
+        }
     }
 
     public void promptAdditionalInformation(String fxml) throws IOException {

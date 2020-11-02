@@ -1,15 +1,17 @@
 package edu.ucdenver.domain;
 
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Category
+public class Category implements Serializable
 {
     //variables for category, eg categoryName, categoryDesc, ....
     private String id;
     private String name;
     private String description;
+    private Category parent;
     //private ArrayList<Product> products;
 
     //This is the default constructor for Category and so will instantiate THE default category.
@@ -18,7 +20,7 @@ public class Category
         id = "0";
         name = "Default Category";
         description = "This is the default category. It encompasses all products.";
-//        parentCategory = null;
+        parent = null;
 //        childCategories = new ArrayList<>();
         //this.products = new ArrayList<>();
     }
@@ -29,7 +31,7 @@ public class Category
         this.id = id;
         this.name = name;
         this.description = description;
-//        this.parentCategory = null;
+        this.parent = null;
 //        this.childCategories = new ArrayList<>();
         //this.products = new ArrayList<>();
     }
@@ -43,16 +45,16 @@ public class Category
 //    }
 
     //If we know id, name, description, parent.
-//    public Category (String id, String name, String description, Category parent)
-//    {
-//        this.id = id;
-//        this.name = name;
-//        this.description = description;
-//        this.parentCategory = parent;
+    public Category (String id, String name, String description, Category parent)
+    {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.parent = parent;
 //        parent.childCategories.add(this);
 //        this.childCategories = new ArrayList<>();
 //        this.products = new ArrayList<>();
-//    }
+    }
 
     //If we know id, nae, description, parent, and children.
 //    public Category (String id, String name, String description, Category parent, ArrayList<Category> children)
@@ -100,12 +102,18 @@ public class Category
         this.description = description;
     }
 
-//    public Category getParentCategory() {
-//        return parentCategory;
-//    }
-//    public void setParentCategory(Category parentCategory) {
-//        this.parentCategory = parentCategory;
-//    }
+    @Override
+    public String toString()
+    {
+        return String.format("NAME: %s", name);
+    }
+
+    public Category getParentCategory() {
+        return parent;
+    }
+    public void setParentCategory(Category parentCategory) {
+        this.parent = parentCategory;
+    }
 //
 //    public void addChildCategory(Category childCategory) {
 //        childCategories.add(childCategory);

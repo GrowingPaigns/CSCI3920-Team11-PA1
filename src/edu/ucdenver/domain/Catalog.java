@@ -6,34 +6,35 @@ import java.util.ArrayList;
 public class Catalog
 {
     private ArrayList<Product> products;
+    private CategoryNode categoryTree;
     private Category defaultCategory;
-    private CategoryTree categoryTree;
 
     public Catalog()
     {
         products = new ArrayList<>();
-        this.defaultCategory = new Category();
-        categoryTree = new CategoryTree(this.defaultCategory);
+        categoryTree = new CategoryNode(new Category());
+        this.defaultCategory = categoryTree.getData();
     }
 
     public Catalog (Category defaultCategory)
     {
         products = new ArrayList<>();
-        this.defaultCategory = defaultCategory;
-        categoryTree = new CategoryTree(defaultCategory);
+        categoryTree = new CategoryNode(defaultCategory);
+        this.defaultCategory = categoryTree.getData();
     }
 
     public Catalog (ArrayList<Product> products, Category defaultCategory)
     {
         this.products = products;
-        this.defaultCategory = defaultCategory;
-        categoryTree = new CategoryTree(defaultCategory);
+        categoryTree = new CategoryNode(defaultCategory);
+        this.defaultCategory = categoryTree.getData();
     }
 
     public Category getDefaultCategory() {return this.defaultCategory;}
     public void setDefaultCategory(Category defaultCategory){
-        this.defaultCategory = defaultCategory;
-        this.categoryTree.setRoot(defaultCategory);
+        this.categoryTree.setParent(defaultCategory);
+        this.categoryTree = this.categoryTree.getParent();
+        this.defaultCategory = categoryTree.getData();
     }
 
     public boolean addProduct(Product product)
@@ -86,10 +87,29 @@ public class Catalog
         return searchResults;
     }
 
-    public CategoryTree getCategoryTree () {return this.categoryTree;}
+    public CategoryNode getCategoryTree () {return this.categoryTree;}
 
-    public void addCategory (Category category) {this.categoryTree.addItem(category);}
-    public void removeCategory (Category category) {this.categoryTree.removeItem(category);}
+    public void addCategory (Category category) {this.categoryTree.addChild(category);}
+    public boolean addCategory (Category parentCategory, Category childCategory) {
+        boolean success = false;
+        CategoryNode parent = this.categoryTree.search(this.categoryTree, parentCategory);
+        if (parent != null) {
+            parent.addChild(childCategory);
+            success = true;
+        }
+        return success;
+    }
+    public boolean removeCategory (Category category) {
+        boolean success = false;
+        CategoryNode nodeToRemove = this.categoryTree.search(this.categoryTree, category);
+        if (nodeToRemove != null) {
+            for (CategoryNode node: nodeToRemove.getChildren())
+                node.setParent(node.getParent());
+            nodeToRemove.removeParent();
+            success = true;
+        }
+        return success;
+    }
 
     public ArrayList<Product> getProducts(){return this.products;}
 }

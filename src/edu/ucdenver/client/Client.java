@@ -200,15 +200,16 @@ public class Client
         return users;
     }
 
-    public CategoryTree getCategories()
+    public CategoryNode getCategories()
     {
-        CategoryTree categories = null;
+        CategoryNode categories = null;
         Request request = new Request("GC");
         //String request = "GC|";
 
         try
         {
-            categories = (CategoryTree) this.sendRequest(request);
+            categories = (CategoryNode) this.sendRequest(request);
+            System.out.println(categories.getData());
         }
         catch (IOException | ClassNotFoundException e)
         {
@@ -442,5 +443,31 @@ public class Client
         }
 
         return products;
+    }
+
+    public boolean addCategory(String id, String name, String description, Category parent) {
+        boolean success = false;
+        Request request = new Request();
+
+        if (this.user.isAdmin())
+        {
+            String action = String.format("AC|");
+            request.setAction(action);
+            boolean response = false;
+
+            try
+            {
+                request.setMessage(new Category (id, name, description, parent));
+                response = (boolean) this.sendRequest(request);
+            }
+            catch (IOException | ClassNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
+            if (response)
+                success = true;
+        }
+        return success;
     }
 }
