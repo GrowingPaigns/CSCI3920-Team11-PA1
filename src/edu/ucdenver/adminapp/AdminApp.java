@@ -16,10 +16,13 @@ public class AdminApp extends Application {
         Application.launch(args);
     }
     public static Client client = new Client();
+    public static Controller c;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("IP-Port.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("IP-Port.fxml"));
+        Parent root = loader.load();
+        c = loader.getController();
         primaryStage.setTitle("");
         primaryStage.setScene(new Scene(root, 720, 544));
         screenController = new ScreenController(primaryStage.getScene());

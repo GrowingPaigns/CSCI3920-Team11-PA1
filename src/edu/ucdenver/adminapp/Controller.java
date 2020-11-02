@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import javax.xml.soap.Text;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Controller {
 
@@ -75,11 +76,13 @@ public class Controller {
         this.treeProductCategories = new TreeView<>();
         this.comboDefaultCategory = new ComboBox<>();
         this.lstRemoveProducts = new ListView<>();
+        this.comboProductType = new ComboBox<>();
     }
 
     public void initialize ()
     {
-
+        String[] types = {"Home Product", "Electronic", "Cellphone", "Computer", "Book"};
+        this.comboProductType.setItems(FXCollections.observableArrayList(types));
     }
 
 
@@ -148,7 +151,6 @@ public class Controller {
             txtIP.clear();
             alert.show();
         }
-
     }
 
     public void createNewUser(ActionEvent actionEvent) {
@@ -216,12 +218,23 @@ public class Controller {
 
     public void addProduct(ActionEvent actionEvent) {
         if (txtProductID.getText() != null && txtProductName.getText()!= null && txtProductBrandName.getText() != null
-        && txtProductDescription.getParagraphs().toString() != null && dpDateAdded.getValue() != null)
+        && txtProductDescription.getParagraphs().toString() != null && dpDateAdded.getValue() != null &&
+        !comboProductType.getSelectionModel().isEmpty())
         {
-            if (comboProductType.getSelectionModel().selectedItemProperty().equals("Home Product"))
+            if (comboProductType.getSelectionModel().selectedItemProperty().getValue().equals("Home Product"))
             {
                 try {
-                    Parent newRoot = FXMLLoader.load(getClass().getResource("homeproduct.fxml"));
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("homeproduct.fxml"));
+                    loader.setController(this);
+                    Parent newRoot = loader.load();
+                    Controller c = loader.getController();
+                    c.txtProductID = this.txtProductID;
+                    c.txtProductName = this.txtProductName;
+                    c.txtProductBrandName = this.txtProductBrandName;
+                    c.txtProductDescription = this.txtProductDescription;
+                    c.dpDateAdded = this.dpDateAdded;
+                    c.comboProductType.getSelectionModel().select(this.comboProductType.getSelectionModel().getSelectedItem());
                     Stage window = new Stage();
                     window.setScene(new Scene(newRoot, 720, 544));
                     window.show();
@@ -229,37 +242,37 @@ public class Controller {
                 catch (IOException ioe)
                 {
                     ioe.printStackTrace();
-                }
-            }
-            else if (comboProductType.getSelectionModel().isEmpty())
-            {
-                if (AdminApp.client.addProduct (txtProductID.getText(), txtProductName.getText(), txtProductBrandName.getText(),
-                        txtProductDescription.getParagraphs().toString(), dpDateAdded.getValue()))
-                {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Product Added Successfully");
-                    txtNewEmail.clear();
-                    txtNewUser.clear();
-                    txtNewPass.clear();
-                    alert.show();
-                }
-                else
-                {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "Unable to add product");
-                    alert.show();
                 }
             }
             else if (comboProductType.getSelectionModel().selectedItemProperty().equals("Book"))
             {
-                try {
-                    Parent newRoot = FXMLLoader.load(getClass().getResource("book.fxml"));
-                    Stage window = new Stage();
-                    window.setScene(new Scene(newRoot, 720, 544));
-                    window.show();
-                }
-                catch (IOException ioe)
-                {
-                    ioe.printStackTrace();
-                }
+//                if (AdminApp.client.addBookProduct (txtProductID.getText(), txtProductName.getText(), txtProductBrandName.getText(),
+//                        txtProductDescription.getParagraphs().toString(), dpDateAdded.getValue()))
+//                {
+//                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Product Added Successfully");
+//                    txtNewEmail.clear();
+//                    txtNewUser.clear();
+//                    txtNewPass.clear();
+//                    alert.show();
+//                }
+//                else
+//                {
+//                    Alert alert = new Alert(Alert.AlertType.ERROR, "Unable to add product");
+//                    alert.show();
+//                }
+            }
+            else if (comboProductType.getSelectionModel().selectedItemProperty().equals("Book"))
+            {
+//                try {
+//                    Parent newRoot = FXMLLoader.load(getClass().getResource("book.fxml"));
+//                    Stage window = new Stage();
+//                    window.setScene(new Scene(newRoot, 720, 544));
+//                    window.show();
+//                }
+//                catch (IOException ioe)
+//                {
+//                    ioe.printStackTrace();
+//                }
             }
 
         }
@@ -276,17 +289,21 @@ public class Controller {
 
     public void addHomeProduct(ActionEvent actionEvent)
     {
-//        if (txtHomeProductLocation.getText() != null)
-//        {
-//            HomeProduct product = new HomeProduct(txtProductID.getText(), txtProductName.getText(), txtProductBrandName.getText(),
-//            txtProductDescription.getParagraphs().toString(), dpDateAdded.getValue(), txtHomeProductLocation.getText());
-//            if (AdminApp.client.addHomeProduct(product));
-//        }
-//        else
-//        {
-//            Alert alert = new Alert(Alert.AlertType.ERROR, "Fill out all fields");
-//            alert.show();
-//        }
+        if (txtHomeProductLocation.getText() != null)
+        {
+            HomeProduct product = new HomeProduct(txtProductID.getText(), txtProductName.getText(), txtProductBrandName.getText(),
+            txtProductDescription.getParagraphs().toString(), dpDateAdded.getValue(), txtHomeProductLocation.getText());
+            if (AdminApp.client.addHomeProduct(txtProductID.getText(), txtProductName.getText(), txtProductBrandName.getText(),
+                    txtProductDescription.getParagraphs().toString(), dpDateAdded.getValue(), new ArrayList<>(treeProductCategories.getSelectionModel().getSelectedItems()),
+                    txtHomeProductLocation.getText()));
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Fill out all fields");
+            alert.show();
+        }
+        Stage stage = (Stage) txtHomeProductLocation.getScene().getWindow();
+        stage.close();
     }
 
     public void addBookProduct(ActionEvent actionEvent)

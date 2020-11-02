@@ -2,7 +2,6 @@ package edu.ucdenver.client;
 
 import apple.laf.JRSUIUtils;
 import edu.ucdenver.domain.*;
-import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
 import java.io.*;
@@ -130,7 +129,7 @@ public class Client
         objectOutputStream.flush();
         displayMessage("CLIENT >> " + request);
         //String srvResponse = this.input.readLine();
-        Object srvResponse = this.objectInputStream.readUnshared();
+        Object srvResponse = this.objectInputStream.readObject();
         displayMessage("SERVER >> " + srvResponse);
         return srvResponse;
     }
@@ -145,8 +144,10 @@ public class Client
             response = (User) sendRequest(request);
             if (response != null)
             {
-                this.user = response;
-                return success = true;
+                if (response.isAdmin()) {
+                    this.user = response;
+                    return success = true;
+                }
             }
         }
         catch (IOException | ClassNotFoundException ioe)
@@ -214,7 +215,8 @@ public class Client
         return categories;
     }
 
-    public boolean addProduct(String id, String name, String brandName, String description, LocalDate date) {
+    public boolean addHomeProduct(String id, String name, String brandName, String description, LocalDate date,
+                                  ArrayList<TreeItem<Category>> categories, String location) {
         boolean success = false;
 
         if (this.user.isAdmin())
@@ -224,8 +226,20 @@ public class Client
 
             try
             {
-                objectOutputStream.writeUnshared(new HomeProduct(id, name, brandName, description, date, "Home"));
-                response = (boolean)this.sendRequest(request);
+                if (categories == null) {
+                    objectOutputStream.writeUnshared(new HomeProduct(id, name, brandName, description, date, location));
+                    response = (boolean) this.sendRequest(request);
+                }
+                else
+                {
+                    ArrayList cat = new ArrayList();
+                    for (TreeItem<Category> t: categories)
+                        cat.add(t.getValue());
+                    objectOutputStream.writeUnshared(request);
+                    response = (boolean) this.sendRequest(new HomeProduct(id, name, brandName, description, date,
+                            cat, location));
+
+                }
             }
             catch (IOException | ClassNotFoundException e)
             {

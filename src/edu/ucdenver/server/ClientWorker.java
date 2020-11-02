@@ -72,55 +72,56 @@ public class ClientWorker implements Runnable
     private void processClientRequest() throws IOException, ClassNotFoundException
     {
         //String clientMessage = this.input.readLine();
-        Object clientMessage = this.objectInputStream.readObject();
-        displayMessage("CLIENT SAID>>>" + clientMessage);
-
-        if (clientMessage instanceof String) {
-            String[] arguments =  ((String) clientMessage).split("\\|");
-            String response = "";
-
-            switch (arguments[0]) {
-                case "L":
-                    User user = system.loginUser(arguments[1], arguments[2]);
-                    if (user != null) {
-                        response = "Login Successful";
-                        objectOutputStream.writeUnshared(user);
-                        objectOutputStream.flush();
-                    } else
-                        response = "Incorrect Username or Password";
-                    break;
-                case "CU":
-                    response = this.system.createNewUser(arguments[1], arguments[2], arguments[3], Boolean.parseBoolean(arguments[4]));
-                    objectOutputStream.writeUnshared(response);
-                    objectOutputStream.flush();
-                    break;
-                case "FU":
-                    ArrayList<User> users = this.system.getUsers();
-                    objectOutputStream.writeUnshared(users);
-                    objectOutputStream.flush();
-                    break;
-                case "GC":
-                    objectOutputStream.writeUnshared(this.system.getCatalog().getCategoryTree());
-                    objectOutputStream.flush();
-                    break;
-
-            }
-        }
-        else if (clientMessage instanceof Product)
+        ArrayList<Object> clientMessage = new ArrayList<>();
+        if (clientMessage.size() == 0)
+            return;
+        boolean cont = true;
+        while (cont)
         {
-            String action = (String) objectInputStream.readUnshared();
-
-            if (action.equals("AP"))
+            Object obj = objectInputStream.readUnshared();
+            if (obj != null)
             {
-                objectOutputStream.writeUnshared(this.system.getCatalog().addProduct((Product)clientMessage));
-                objectOutputStream.flush();
+                clientMessage.add(obj);
             }
-            else if (action.equals("RP"))
-            {
-                objectOutputStream.writeUnshared(this.system.getCatalog().removeProduct((Product) clientMessage));
-                objectOutputStream.flush();
+            else {
+                cont = false;
             }
         }
+
+        displayMessage("CLIENT SAID>>>" + clientMessage);
+        String[] arguments =  ((String) clientMessage.get(0)).split("\\|");
+        String response = "";
+
+        switch (arguments[0]) {
+            case "L":
+                User user = system.loginUser(arguments[1], arguments[2]);
+                if (user != null) {
+                    response = "Login Successful";
+                    objectOutputStream.writeUnshared(user);
+                    objectOutputStream.flush();
+                } else
+                    response = "Incorrect Username or Password";
+                break;
+            case "CU":
+                response = this.system.createNewUser(arguments[1], arguments[2], arguments[3], Boolean.parseBoolean(arguments[4]));
+                objectOutputStream.writeUnshared(response);
+                objectOutputStream.flush();
+                break;
+            case "FU":
+                ArrayList<User> users = this.system.getUsers();
+                objectOutputStream.writeUnshared(users);
+                objectOutputStream.flush();
+                break;
+            case "GC":
+                objectOutputStream.writeUnshared(this.system.getCatalog().getCategoryTree());
+                objectOutputStream.flush();
+                break;
+            case "AP":
+                objectOutputStream.writeUnshared(this.system.getCatalog().addProduct((Product) clientMessage.get(1)));
+                objectOutputStream.flush();
+                break;
+
+            }
     }
 
 

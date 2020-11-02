@@ -3,9 +3,6 @@ package edu.ucdenver.domain;
 import javafx.collections.ObservableListBase;
 import javafx.scene.control.TreeItem;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CategoryTree
 {
