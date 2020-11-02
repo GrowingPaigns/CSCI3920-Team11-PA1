@@ -79,7 +79,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab fx:id="tabProductManagement" text="Product Management">
+          <Tab fx:id="tabProductManagement" onSelectionChanged="#loadViews" text="Product Management">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

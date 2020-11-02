@@ -1,14 +1,18 @@
 
-†
-java:S13194"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(α§Ρ©
-‹
-java:S1319?"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ο ήϋÿÿÿÿ
-—
-java:S1598"€This file "User.java" should be located in "edu/ucdenver/domain" directory, not in "/Users/Raff/CSCI3920-Team11-PA1/src/domain".(½¨ΓΎ
-t
-java:S22936"YReplace the type specification in this constructor call with the diamond operator ("<>").(όψÿÿÿÿ
-t
-java:S2293A"YReplace the type specification in this constructor call with the diamond operator ("<>").(όψÿÿÿÿ
+{
+java:S2293F"YReplace the type specification in this constructor call with the diamond operator ("<>").(όψÿÿÿÿ8άªΝ¨Χ.
+{
+java:S22935"YReplace the type specification in this constructor call with the diamond operator ("<>").(όψÿÿÿÿ8άªΝ¨Χ.
 G
 java:S1068
 ",Remove this unused "password" private field.(γλ­ϊÿÿÿÿ
+M
+java:S1172R"+Remove this unused method parameter "user".(ά‘Ρϊÿÿÿÿ8…νΥ¨Χ.
+’
+java:S13193"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ϋΗύÿÿÿÿ8άªΝ¨Χ.
+H
+java:S1172W"+Remove this unused method parameter "user".(―εκτ8Ρ³Ψ¨Χ.
+
+java:S1319>"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(Υε«¶8άªΝ¨Χ.
+
+java:S1319W"sThe type of the "products" object should be an interface such as "List" rather than the implementation "ArrayList".(―εκτ8γφΪ¨Χ.

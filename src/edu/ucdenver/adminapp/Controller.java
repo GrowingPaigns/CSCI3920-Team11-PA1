@@ -17,8 +17,10 @@ import javafx.stage.Stage;
 
 import javax.xml.soap.Text;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Controller {
 
@@ -59,6 +61,22 @@ public class Controller {
     public Button btnAddProduct;
     public Button btnRemoveProduct;
     public ListView<Product> lstRemoveProducts;
+    public TextField txtHomeProductLocation;
+    public Button btnHomeProductSubmit;
+    public TextField txtBookTitle;
+    public TextField txtAuthorName;
+    public DatePicker dpPublicationDate;
+    public TextField txtNumberOfPages;
+    public Button btnBookSubmit;
+    public TextField txtElectronicSerial;
+    public DatePicker dpElectronicWarrantyDate1;
+    public DatePicker dpElectronicWarrantyDate2;
+    public Button btnElectronicSubmit;
+    public TextArea txtComputerSpecs;
+    public Button txtComputerSubmit;
+    public Button btnCellphoneSubmit;
+    public TextField txtCellphoneIMEI;
+    public ComboBox<String> comboCellphoneOS;
 
     //Category Management
     public TextField txtCategoryID;
@@ -66,8 +84,8 @@ public class Controller {
     public TextArea txtCategoryDescription;
     public TextField txtRemoveCategoryID;
     public ComboBox<String> comboDefaultCategory;
-    public TextField txtHomeProductLocation;
-    public Button btnHomeProductSubmit;
+
+
 
     public Controller()
     {
@@ -77,26 +95,18 @@ public class Controller {
         this.comboDefaultCategory = new ComboBox<>();
         this.lstRemoveProducts = new ListView<>();
         this.comboProductType = new ComboBox<>();
+        this.comboCellphoneOS = new ComboBox<>();
     }
 
     public void initialize ()
     {
         String[] types = {"Home Product", "Electronic", "Cellphone", "Computer", "Book"};
         this.comboProductType.setItems(FXCollections.observableArrayList(types));
+        this.comboCellphoneOS.setItems((FXCollections.observableArrayList("iOS", "Android")));
     }
 
 
     public void changeScene(String fxml) throws IOException {
-//        Parent secondaryScene = FXMLLoader.load(getClass().getResource(fxml));
-//        Parent primaryScene = FXMLLoader.load(getClass().getResource("IP-Port.fxml"));
-//        Scene scene = new Scene(primaryScene);
-//        Scene nextScene = new Scene(secondaryScene);
-//
-//        Stage window = new Stage();
-//        window.setScene(scene);
-//        window.close();
-//        window.setScene(nextScene);
-//        window.show();
         AdminApp.screenController.activate(fxml);
     }
 
@@ -116,7 +126,6 @@ public class Controller {
     public void ipToLogin(ActionEvent actionEvent) throws IOException
     {
         if (txtIP.getText() != null && txtPort.getText() != null) {
-            //client = new Client(txtIP.getText(), Integer.parseInt(txtPort.getText()));
             AdminApp.client.setServerIP(txtIP.getText());
             AdminApp.client.setServerPort(Integer.parseInt(txtPort.getText()));
             AdminApp.client.connect();
@@ -209,10 +218,11 @@ public class Controller {
         }
         else if (this.tabProductManagement.isSelected())
         {
-            TreeItem<Category> root = AdminApp.client.getCategories().getRoot();
-            treeProductCategories = new TreeView<>(root);
+//            TreeItem<Category> root = AdminApp.client.getCategories().getRoot();
+//            treeProductCategories = new TreeView<>(root);
 
-            //lstRemoveProducts.setItems(FXCollections.observableArrayList(AdminApp.client.fetchProducts()));
+            lstRemoveProducts.setItems(FXCollections.observableArrayList(AdminApp.client.fetchProducts()));
+            lstRemoveProducts.refresh();
         }
     }
 
@@ -224,55 +234,57 @@ public class Controller {
             if (comboProductType.getSelectionModel().selectedItemProperty().getValue().equals("Home Product"))
             {
                 try {
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("homeproduct.fxml"));
-                    loader.setController(this);
-                    Parent newRoot = loader.load();
-                    Controller c = loader.getController();
-                    c.txtProductID = this.txtProductID;
-                    c.txtProductName = this.txtProductName;
-                    c.txtProductBrandName = this.txtProductBrandName;
-                    c.txtProductDescription = this.txtProductDescription;
-                    c.dpDateAdded = this.dpDateAdded;
-                    c.comboProductType.getSelectionModel().select(this.comboProductType.getSelectionModel().getSelectedItem());
-                    Stage window = new Stage();
-                    window.setScene(new Scene(newRoot, 720, 544));
-                    window.show();
+                    //We do this in order ot have reference to controller that is instantiated when opening new scene.
+                    promptAdditionalInformation("homeproduct.fxml");
                 }
                 catch (IOException ioe)
                 {
                     ioe.printStackTrace();
                 }
             }
-            else if (comboProductType.getSelectionModel().selectedItemProperty().equals("Book"))
+            else if (comboProductType.getSelectionModel().selectedItemProperty().getValue().equals("Book"))
             {
-//                if (AdminApp.client.addBookProduct (txtProductID.getText(), txtProductName.getText(), txtProductBrandName.getText(),
-//                        txtProductDescription.getParagraphs().toString(), dpDateAdded.getValue()))
-//                {
-//                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Product Added Successfully");
-//                    txtNewEmail.clear();
-//                    txtNewUser.clear();
-//                    txtNewPass.clear();
-//                    alert.show();
-//                }
-//                else
-//                {
-//                    Alert alert = new Alert(Alert.AlertType.ERROR, "Unable to add product");
-//                    alert.show();
-//                }
+                try {
+                    //We do this in order ot have reference to controller that is instantiated when opening new scene.
+                    promptAdditionalInformation("book.fxml");
+                }
+                catch (IOException ioe)
+                {
+                    ioe.printStackTrace();
+                }
             }
-            else if (comboProductType.getSelectionModel().selectedItemProperty().equals("Book"))
+            else if (comboProductType.getSelectionModel().selectedItemProperty().getValue().equals("Electronic"))
             {
-//                try {
-//                    Parent newRoot = FXMLLoader.load(getClass().getResource("book.fxml"));
-//                    Stage window = new Stage();
-//                    window.setScene(new Scene(newRoot, 720, 544));
-//                    window.show();
-//                }
-//                catch (IOException ioe)
-//                {
-//                    ioe.printStackTrace();
-//                }
+                try {
+                    //We do this in order ot have reference to controller that is instantiated when opening new scene.
+                    promptAdditionalInformation("electronic.fxml");
+                }
+                catch (IOException ioe)
+                {
+                    ioe.printStackTrace();
+                }
+            }
+            else if (comboProductType.getSelectionModel().selectedItemProperty().getValue().equals("Computer"))
+            {
+                try {
+                    //We do this in order ot have reference to controller that is instantiated when opening new scene.
+                    promptAdditionalInformation("computer.fxml");
+                }
+                catch (IOException ioe)
+                {
+                    ioe.printStackTrace();
+                }
+            }
+            else if (comboProductType.getSelectionModel().selectedItemProperty().getValue().equals("Cellphone"))
+            {
+                try {
+                    //We do this in order ot have reference to controller that is instantiated when opening new scene.
+                    promptAdditionalInformation("cellphone.fxml");
+                }
+                catch (IOException ioe)
+                {
+                    ioe.printStackTrace();
+                }
             }
 
         }
@@ -291,11 +303,25 @@ public class Controller {
     {
         if (txtHomeProductLocation.getText() != null)
         {
-            HomeProduct product = new HomeProduct(txtProductID.getText(), txtProductName.getText(), txtProductBrandName.getText(),
-            txtProductDescription.getParagraphs().toString(), dpDateAdded.getValue(), txtHomeProductLocation.getText());
             if (AdminApp.client.addHomeProduct(txtProductID.getText(), txtProductName.getText(), txtProductBrandName.getText(),
                     txtProductDescription.getParagraphs().toString(), dpDateAdded.getValue(), new ArrayList<>(treeProductCategories.getSelectionModel().getSelectedItems()),
-                    txtHomeProductLocation.getText()));
+                    txtHomeProductLocation.getText()))
+            {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Product Added Successfully");
+                txtProductName.clear();
+                txtProductBrandName.clear();
+                txtProductDescription.clear();
+                txtProductID.clear();
+                alert.show();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "That product ID already exists");
+                txtProductName.clear();
+                txtProductBrandName.clear();
+                txtProductDescription.clear();
+                alert.show();
+            }
+
         }
         else
         {
@@ -306,18 +332,166 @@ public class Controller {
         stage.close();
     }
 
-    public void addBookProduct(ActionEvent actionEvent)
-    {
-//        if (txtHomeProductLocation.getText() != null)
-//        {
-//            Book product = new Book(txtProductID.getText(), txtProductName.getText(), txtProductBrandName.getText(),
-//                    txtProductDescription.getParagraphs().toString(), dpDateAdded.getValue(), );
-//            if (AdminApp.client.addHomeProduct(product));
-//        }
-//        else
-//        {
-//            Alert alert = new Alert(Alert.AlertType.ERROR, "Fill out all fields");
-//            alert.show();
-//        }
+    public void addBook(ActionEvent actionEvent) {
+        if (txtBookTitle.getText() != null && txtAuthorName.getText() != null && dpPublicationDate.isArmed()
+            && txtNumberOfPages.getText() != null)
+        {
+            if (AdminApp.client.addBook(txtProductID.getText(), txtProductName.getText(), txtProductBrandName.getText(),
+                    txtProductDescription.getParagraphs().toString(), dpDateAdded.getValue(), new ArrayList<>(treeProductCategories.getSelectionModel().getSelectedItems()),
+                    txtBookTitle.getText(), txtAuthorName.getText(), dpPublicationDate.getValue(), Integer.parseInt(txtNumberOfPages.getText())))
+            {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Product Added Successfully");
+                txtProductName.clear();
+                txtProductBrandName.clear();
+                txtProductDescription.clear();
+                txtProductID.clear();
+                alert.show();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "That product ID already exists");
+                txtProductName.clear();
+                txtProductBrandName.clear();
+                txtProductDescription.clear();
+                alert.show();
+            }
+
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Fill out all fields");
+            alert.show();
+        }
+        Stage stage = (Stage) txtBookTitle.getScene().getWindow();
+        stage.close();
     }
+
+    public void addElectronic(ActionEvent actionEvent) {
+        if (txtElectronicSerial.getText() != null && dpElectronicWarrantyDate1.getValue() != null && dpElectronicWarrantyDate2.getValue() != null)
+        {
+            if (AdminApp.client.addElectronic(txtProductID.getText(), txtProductName.getText(), txtProductBrandName.getText(),
+                    txtProductDescription.getParagraphs().toString(), dpDateAdded.getValue(),
+                    new ArrayList<>(treeProductCategories.getSelectionModel().getSelectedItems()),
+                    txtElectronicSerial.getText(),
+                    new LocalDate[] {dpElectronicWarrantyDate1.getValue(),
+                            dpElectronicWarrantyDate2.getValue()}))
+            {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Product Added Successfully");
+                txtProductName.clear();
+                txtProductBrandName.clear();
+                txtProductDescription.clear();
+                txtProductID.clear();
+                alert.show();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "That product ID already exists");
+                txtProductName.clear();
+                txtProductBrandName.clear();
+                txtProductDescription.clear();
+                alert.show();
+            }
+
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Fill out all fields");
+            alert.show();
+        }
+        Stage stage = (Stage) txtElectronicSerial.getScene().getWindow();
+        stage.close();
+    }
+
+    public void addComputer(ActionEvent actionEvent) {
+        if (txtElectronicSerial.getText() != null && dpElectronicWarrantyDate1.getValue() != null && dpElectronicWarrantyDate2.getValue() != null
+        && !txtComputerSpecs.getParagraphs().isEmpty())
+        {
+            if (AdminApp.client.addComputer(txtProductID.getText(), txtProductName.getText(), txtProductBrandName.getText(),
+                    txtProductDescription.getParagraphs().toString(), dpDateAdded.getValue(),
+                    new ArrayList<>(treeProductCategories.getSelectionModel().getSelectedItems()),
+                    txtElectronicSerial.getText(),
+                    new LocalDate[] {dpElectronicWarrantyDate1.getValue(),
+                            dpElectronicWarrantyDate2.getValue()}, txtComputerSpecs.getParagraphs().toString()))
+            {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Product Added Successfully");
+                txtProductName.clear();
+                txtProductBrandName.clear();
+                txtProductDescription.clear();
+                txtProductID.clear();
+                alert.show();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "That product ID already exists");
+                txtProductName.clear();
+                txtProductBrandName.clear();
+                txtProductDescription.clear();
+                alert.show();
+            }
+
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Fill out all fields");
+            alert.show();
+        }
+        Stage stage = (Stage) txtElectronicSerial.getScene().getWindow();
+        stage.close();
+    }
+
+    public void addCellphone(ActionEvent actionEvent) {
+        if (txtElectronicSerial.getText() != null && dpElectronicWarrantyDate1.getValue() != null && dpElectronicWarrantyDate2.getValue() != null
+        && txtCellphoneIMEI.getText() != null && !comboCellphoneOS.getSelectionModel().isEmpty())
+        {
+            if (AdminApp.client.addCellphone(txtProductID.getText(), txtProductName.getText(), txtProductBrandName.getText(),
+                    txtProductDescription.getParagraphs().toString(), dpDateAdded.getValue(),
+                    new ArrayList<>(treeProductCategories.getSelectionModel().getSelectedItems()),
+                    txtElectronicSerial.getText(),
+                    new LocalDate[] {dpElectronicWarrantyDate1.getValue(),
+                            dpElectronicWarrantyDate2.getValue()}, txtCellphoneIMEI.getText(), comboCellphoneOS.getSelectionModel().getSelectedItem()))
+            {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Product Added Successfully");
+                txtProductName.clear();
+                txtProductBrandName.clear();
+                txtProductDescription.clear();
+                txtProductID.clear();
+                alert.show();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "That product ID already exists");
+                txtProductName.clear();
+                txtProductBrandName.clear();
+                txtProductDescription.clear();
+                alert.show();
+            }
+
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Fill out all fields");
+            alert.show();
+        }
+        Stage stage = (Stage) txtElectronicSerial.getScene().getWindow();
+        stage.close();
+    }
+
+    public void promptAdditionalInformation(String fxml) throws IOException {
+        //We do this in order ot have reference to controller that is instantiated when opening new scene.
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(fxml));
+        loader.setController(this);
+        Parent newRoot = loader.load();
+        Controller c = loader.getController();
+
+        //Send the relevant data to this new controller
+        c.txtProductID = this.txtProductID;
+        c.txtProductName = this.txtProductName;
+        c.txtProductBrandName = this.txtProductBrandName;
+        c.txtProductDescription = this.txtProductDescription;
+        c.dpDateAdded = this.dpDateAdded;
+        c.comboProductType.getSelectionModel().select(this.comboProductType.getSelectionModel().getSelectedItem());
+        Stage window = new Stage();
+        window.setScene(new Scene(newRoot, 720, 544));
+        window.show();
+    }
+
+
+
 }

@@ -3,8 +3,10 @@ package edu.ucdenver.domain;
 import javafx.collections.ObservableListBase;
 import javafx.scene.control.TreeItem;
 
+import java.io.Serializable;
 
-public class CategoryTree
+
+public class CategoryTree implements Serializable
 {
     private javafx.scene.control.TreeItem<Category> root;
 
@@ -82,7 +84,7 @@ public class CategoryTree
         this.root.setValue(rootData);
     }
 
-//    public static class javafx.scene.control.TreeItem<Category> {
+//    public static class Node<Category> {
 //        private Category data;
 //        private TreeItem<Category> parent;
 //        private List<TreeItem<Category>> children;

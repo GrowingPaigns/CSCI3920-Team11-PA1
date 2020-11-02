@@ -10,6 +10,7 @@ import java.lang.reflect.Array;
 import java.net.Socket;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Client
@@ -129,7 +130,7 @@ public class Client
         objectOutputStream.flush();
         displayMessage("CLIENT >> " + request);
         //String srvResponse = this.input.readLine();
-        Object srvResponse = this.objectInputStream.readObject();
+        Object srvResponse = this.objectInputStream.readUnshared();
         displayMessage("SERVER >> " + srvResponse);
         return srvResponse;
     }
@@ -137,11 +138,12 @@ public class Client
     public boolean loginUser (String username, String password)
     {
         String request = String.format("L|%s|%s", username, password);
+        Request request1 = new Request(request);
         User response = null;
         boolean success = false;
         try
         {
-            response = (User) sendRequest(request);
+            response = (User) sendRequest(request1);
             if (response != null)
             {
                 if (response.isAdmin()) {
@@ -183,8 +185,8 @@ public class Client
     public ArrayList<User> fetchUsers ()
     {
         ArrayList<User> users = null;
-
-        String request = "FU";
+        Request request = new Request("FU");
+        //String request = "FU";
 
         try
         {
@@ -201,7 +203,8 @@ public class Client
     public CategoryTree getCategories()
     {
         CategoryTree categories = null;
-        String request = "GC|";
+        Request request = new Request("GC");
+        //String request = "GC|";
 
         try
         {
@@ -218,27 +221,29 @@ public class Client
     public boolean addHomeProduct(String id, String name, String brandName, String description, LocalDate date,
                                   ArrayList<TreeItem<Category>> categories, String location) {
         boolean success = false;
+        Request request = new Request();
 
         if (this.user.isAdmin())
         {
-            String request = String.format("AP|");
+            String action = String.format("AP|");
+            request.setAction(action);
             boolean response = false;
+
 
             try
             {
-                if (categories == null) {
-                    objectOutputStream.writeUnshared(new HomeProduct(id, name, brandName, description, date, location));
+                if (categories.size() == 0) {
+                    request.setMessage(new HomeProduct(id, name, brandName, description, date, location));
                     response = (boolean) this.sendRequest(request);
                 }
                 else
                 {
-                    ArrayList cat = new ArrayList();
+                    ArrayList arrayListCategories = new ArrayList();
                     for (TreeItem<Category> t: categories)
-                        cat.add(t.getValue());
-                    objectOutputStream.writeUnshared(request);
-                    response = (boolean) this.sendRequest(new HomeProduct(id, name, brandName, description, date,
-                            cat, location));
-
+                        arrayListCategories.add(t.getValue());
+                    request.setMessage(new HomeProduct(id, name, brandName, description, date,
+                            arrayListCategories, location));
+                    response = (boolean) this.sendRequest(request);
                 }
             }
             catch (IOException | ClassNotFoundException e)
@@ -250,5 +255,192 @@ public class Client
                 success = true;
         }
         return success;
+    }
+
+    public boolean addBook(String id, String name, String brandName, String description, LocalDate dateAdded,
+                           ArrayList<TreeItem<Category>> categories, String title, String author,
+                           LocalDate publicationDate, int numberOfPages) {
+        boolean success = false;
+        Request request = new Request();
+
+        if (this.user.isAdmin())
+        {
+            String action = String.format("AP|");
+            request.setAction(action);
+            boolean response = false;
+
+
+            try
+            {
+                if (categories.isEmpty()) {
+                    request.setMessage(new Book(id, name, brandName, description, dateAdded, title, author,
+                            publicationDate, numberOfPages));
+                    response = (boolean) this.sendRequest(request);
+                }
+                else
+                {
+                    ArrayList arrayListCategories = new ArrayList();
+                    for (TreeItem<Category> t: categories)
+                        arrayListCategories.add(t.getValue());
+                    request.setMessage(new Book(id, name, brandName, description, dateAdded,
+                            arrayListCategories, title, author, publicationDate, numberOfPages));
+                    response = (boolean) this.sendRequest(request);
+                }
+            }
+            catch (IOException | ClassNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
+            if (response)
+                success = true;
+        }
+        return success;
+    }
+
+    public boolean addElectronic(String id, String name, String brandName, String description, LocalDate dateAdded,
+                                 ArrayList<TreeItem<Category>> categories, String serial,
+                                 LocalDate[] warrantyPeriod) {
+        boolean success = false;
+        Request request = new Request();
+
+        if (this.user.isAdmin())
+        {
+            String action = String.format("AP|");
+            request.setAction(action);
+            boolean response = false;
+
+
+            try
+            {
+                if (categories.isEmpty()) {
+                    request.setMessage(new Electronic(id, name, brandName, description, dateAdded,
+                            serial, warrantyPeriod));
+                    response = (boolean) this.sendRequest(request);
+                }
+                else
+                {
+                    ArrayList arrayListCategories = new ArrayList();
+                    for (TreeItem<Category> t: categories)
+                        arrayListCategories.add(t.getValue());
+                    request.setMessage(new Electronic(id, name, brandName, description, dateAdded,
+                            arrayListCategories, serial, warrantyPeriod));
+                    response = (boolean) this.sendRequest(request);
+                }
+            }
+            catch (IOException | ClassNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
+            if (response)
+                success = true;
+        }
+        return success;
+    }
+
+    public boolean addComputer(String id, String name, String brandName, String description, LocalDate dateAdded,
+                               ArrayList<TreeItem<Category>> categories, String serial, LocalDate[] warrantyPeriod,
+                               String specs) {
+        boolean success = false;
+        Request request = new Request();
+
+        if (this.user.isAdmin())
+        {
+            String action = String.format("AP|");
+            request.setAction(action);
+            boolean response = false;
+
+
+            try
+            {
+                if (categories.isEmpty()) {
+                    ArrayList<String> specifications = new ArrayList<>(Arrays.asList(specs.split("\\r?\\n")));
+                    request.setMessage(new Computer(id, name, brandName, description, dateAdded,
+                            serial, warrantyPeriod, specifications));
+                    response = (boolean) this.sendRequest(request);
+                }
+                else
+                {
+                    ArrayList<String> specifications = new ArrayList<>(Arrays.asList(specs.split("\\r?\\n")));
+                    ArrayList arrayListCategories = new ArrayList();
+                    for (TreeItem<Category> t: categories)
+                        arrayListCategories.add(t.getValue());
+                    request.setMessage(new Computer(id, name, brandName, description, dateAdded,
+                            arrayListCategories, serial, warrantyPeriod, specifications));
+                    response = (boolean) this.sendRequest(request);
+                }
+            }
+            catch (IOException | ClassNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
+            if (response)
+                success = true;
+        }
+        return success;
+    }
+
+    public boolean addCellphone(String id, String name, String brandName, String description, LocalDate dateAdded,
+                                ArrayList<TreeItem<Category>> categories, String serial, LocalDate[] warrantyPeriod,
+                                String imei, String os) {
+        boolean success = false;
+        Request request = new Request();
+
+        if (this.user.isAdmin())
+        {
+            String action = String.format("AP|");
+            request.setAction(action);
+            boolean response = false;
+
+            Cellphone.eOperatingSystem operatingSystem = null;
+            if (os.equals("iOS"))
+                operatingSystem = Cellphone.eOperatingSystem.IOS;
+            else if (os.equals("Android"))
+                operatingSystem = Cellphone.eOperatingSystem.ANDROID;
+            try
+            {
+                if (categories.isEmpty()) {
+                    request.setMessage(new Cellphone(id, name, brandName, description, dateAdded,
+                            serial, warrantyPeriod, imei, operatingSystem));
+                    response = (boolean) this.sendRequest(request);
+                }
+                else
+                {
+                    ArrayList arrayListCategories = new ArrayList();
+                    for (TreeItem<Category> t: categories)
+                        arrayListCategories.add(t.getValue());
+                    request.setMessage(new Cellphone(id, name, brandName, description, dateAdded,
+                            arrayListCategories, serial, warrantyPeriod, imei, operatingSystem));
+                    response = (boolean) this.sendRequest(request);
+                }
+            }
+            catch (IOException | ClassNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
+            if (response)
+                success = true;
+        }
+        return success;
+    }
+
+    public ArrayList<Product> fetchProducts() {
+        ArrayList<Product> products = null;
+        Request request = new Request("FP");
+        //String request = "FP";
+
+        try
+        {
+            products = (ArrayList<Product>)this.sendRequest(request);
+        }
+        catch(IOException | ClassNotFoundException ioe)
+        {
+            ioe.printStackTrace();
+        }
+
+        return products;
     }
 }

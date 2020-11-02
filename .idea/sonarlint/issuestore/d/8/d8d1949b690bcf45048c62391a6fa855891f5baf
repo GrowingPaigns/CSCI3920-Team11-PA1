@@ -1,11 +1,8 @@
 
 ‹
-java:S1319"pThe type of the "users" object should be an interface such as "List" rather than the implementation "ArrayList".(ªõ¢Ðýÿÿÿÿ
-Œ
-java:S1319"qThe type of the "orders" object should be an interface such as "List" rather than the implementation "ArrayList".(ªõ¢Ðýÿÿÿÿ
-™
-java:S1598"‚This file "System.java" should be located in "edu/ucdenver/domain" directory, not in "/Users/Raff/CSCI3920-Team11-PA1/src/domain".(½¨Ã¾
-E
-java:S1068"*Remove this unused "orders" private field.(Š±Ö¥øÿÿÿÿ
+java:S1319"pThe type of the "users" object should be an interface such as "List" rather than the implementation "ArrayList".(ªõ¢Ðýÿÿÿÿ
 A
-java:S1068	"+Remove this unused "catalog" private field.(Ó•‰€
+java:S1068
+"+Remove this unused "catalog" private field.(Ó•‰€
+Œ
+java:S1319"qThe type of the "orders" object should be an interface such as "List" rather than the implementation "ArrayList".(ªõ¢Ðýÿÿÿÿ

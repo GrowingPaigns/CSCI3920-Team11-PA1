@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import edu.ucdenver.client.Request;
 import edu.ucdenver.domain.HomeProduct;
 import edu.ucdenver.domain.Product;
 import edu.ucdenver.domain.System;
@@ -71,25 +72,9 @@ public class ClientWorker implements Runnable
 
     private void processClientRequest() throws IOException, ClassNotFoundException
     {
-        //String clientMessage = this.input.readLine();
-        ArrayList<Object> clientMessage = new ArrayList<>();
-        if (clientMessage.size() == 0)
-            return;
-        boolean cont = true;
-        while (cont)
-        {
-            Object obj = objectInputStream.readUnshared();
-            if (obj != null)
-            {
-                clientMessage.add(obj);
-            }
-            else {
-                cont = false;
-            }
-        }
-
+        Request clientMessage = (Request) this.objectInputStream.readUnshared();
         displayMessage("CLIENT SAID>>>" + clientMessage);
-        String[] arguments =  ((String) clientMessage.get(0)).split("\\|");
+        String[] arguments =  (clientMessage.getAction()).split("\\|");
         String response = "";
 
         switch (arguments[0]) {
@@ -112,12 +97,17 @@ public class ClientWorker implements Runnable
                 objectOutputStream.writeUnshared(users);
                 objectOutputStream.flush();
                 break;
+            case "FP":
+                ArrayList<Product> products = this.system.getCatalog().getProducts();
+                objectOutputStream.writeUnshared(products);
+                objectOutputStream.flush();
+                break;
             case "GC":
                 objectOutputStream.writeUnshared(this.system.getCatalog().getCategoryTree());
                 objectOutputStream.flush();
                 break;
             case "AP":
-                objectOutputStream.writeUnshared(this.system.getCatalog().addProduct((Product) clientMessage.get(1)));
+                objectOutputStream.writeUnshared(this.system.getCatalog().addProduct((Product) clientMessage.getMessage()));
                 objectOutputStream.flush();
                 break;
 

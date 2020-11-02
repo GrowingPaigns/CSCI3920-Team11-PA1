@@ -1,15 +1,17 @@
 
-†
-java:S13196"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(á§Ñ©
-˜
-java:S1598"This file "Order.java" should be located in "edu/ucdenver/domain" directory, not in "/Users/Raff/CSCI3920-Team11-PA1/src/domain".(½¨Ã¾
+o
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(‘óÑ©
+<
+java:S3010"&Remove this assignment of "sequencer".(Ìˆî
+C
+java:S3010!"&Remove this assignment of "sequencer".(Ìˆî8…àØ¨×.
+•
+java:S1319"sThe type of the "products" object should be an interface such as "List" rather than the implementation "ArrayList".(¢ì¾€ùÿÿÿÿ8÷¢Ù¨×.
+‹
+java:S1319B"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(®ÚŒÁùÿÿÿÿ
+Z
+java:S1134"DTake the required action to fix the issue indicated by this comment.(¥×–˜
 Y
 java:S1134"DTake the required action to fix the issue indicated by this comment.(¾¿(
-Z
-java:S1134"DTake the required action to fix the issue indicated by this comment.(¥×–˜
-<
-java:S3010"&Remove this assignment of "sequencer".(Ìˆî
-o
-java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(‘óÑ©
 M
-java:S1135J"2Complete the task associated to this TODO comment.(¡¤¦Ğúÿÿÿÿ
+java:S1135V"2Complete the task associated to this TODO comment.(¡¤¦Ğúÿÿÿÿ

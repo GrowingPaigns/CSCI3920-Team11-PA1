@@ -1,8 +1,9 @@
 
-‹
-java:S1319
-"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(½ùÎéüÿÿÿÿ
-H
-java:S1128"-Remove this unused import 'java.util.Arrays'.(î–˜Éüÿÿÿÿ
-‹
-java:S1319"pThe type of the "specs" object should be an interface such as "List" rather than the implementation "ArrayList".(÷¥®Øúÿÿÿÿ
+’
+java:S1319"pThe type of the "specs" object should be an interface such as "List" rather than the implementation "ArrayList".(”Û¡¢üÿÿÿÿ8š·í‡×.
+]	java:S107
+"AConstructor has 8 parameters, which is greater than 7 authorized.(òúä›8üöğ‡×.
+’
+java:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(½ùÎéüÿÿÿÿ8‰òí‡×.
+’
+java:S1319"pThe type of the "specs" object should be an interface such as "List" rather than the implementation "ArrayList".(÷¥®Øúÿÿÿÿ8‰òí‡×.

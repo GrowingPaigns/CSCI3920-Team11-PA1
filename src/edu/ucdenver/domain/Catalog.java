@@ -90,4 +90,6 @@ public class Catalog
 
     public void addCategory (Category category) {this.categoryTree.addItem(category);}
     public void removeCategory (Category category) {this.categoryTree.removeItem(category);}
+
+    public ArrayList<Product> getProducts(){return this.products;}
 }

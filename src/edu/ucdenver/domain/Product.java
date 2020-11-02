@@ -1,9 +1,10 @@
 package edu.ucdenver.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public abstract class Product
+public abstract class Product implements Serializable
 {
     protected String id;
     protected String name;

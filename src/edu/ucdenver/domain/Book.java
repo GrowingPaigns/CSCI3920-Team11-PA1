@@ -1,9 +1,10 @@
 package edu.ucdenver.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Book extends Product
+public class Book extends Product implements Serializable
 {
 
     private String title;

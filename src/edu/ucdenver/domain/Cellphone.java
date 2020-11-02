@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Cellphone extends Electronic
 {
-    enum eOperatingSystem{IOS, ANDROID}
+    public enum eOperatingSystem{IOS, ANDROID}
 
     //variables
     private String imei;

@@ -23,3 +23,13 @@ T
 $src/edu/ucdenver/domain/Product.java,e/a/ea730cb18f640ba4377fb326ca216dd5de550c00
 X
 (src/edu/ucdenver/domain/HomeProduct.java,6/8/6886253c8a5286756e607844e015fb5d9b8d9207
+V
+&src/edu/ucdenver/domain/Cellphone.java,9/2/928511d565a76935878e014339912b1752044f27
+V
+&src/edu/ucdenver/TestApp/TestMain.java,5/7/575a98a31fd19922df8558582bd423772d7cc8fe
+S
+#src/edu/ucdenver/server/Server.java,6/8/68ac8848e2312fcd592197a5ce735aafda82144a
+Y
+)src/edu/ucdenver/server/ClientWorker.java,6/d/6d874fd3fceffbc93e413540d535a48615b24c74
+^
+.src/edu/ucdenver/server/ServerApplication.java,9/c/9c1f91fd4ec6aae449b7ffc982bdf4c9c811d85f
