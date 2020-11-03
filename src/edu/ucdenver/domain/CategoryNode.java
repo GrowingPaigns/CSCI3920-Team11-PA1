@@ -59,13 +59,34 @@ public class CategoryNode implements Serializable{
         this.parent = null;
     }
 
+    public boolean removeNode (Category category)
+    {
+        boolean success = false;
+        CategoryNode nodeToRemove = this.search(this, category);
+        if (nodeToRemove != null && !nodeToRemove.isRoot()) {
+            for (CategoryNode node: nodeToRemove.getChildren()) {
+                node.setParent(nodeToRemove.getParent());
+                nodeToRemove.getParent().addChild(node);
+            }
+            nodeToRemove.getParent().getChildren().remove(nodeToRemove);
+            nodeToRemove.removeParent();
+            nodeToRemove.getChildren().clear();
+            success = true;
+        }
+        return success;
+    }
+
     public CategoryNode search (CategoryNode root, Category child)
     {
         CategoryNode result = null;
-        if (root.getData().getId().equals(child.getId()))
+        if (root == null)
+            return null;
+        else if (root.getData().getId().equals(child.getId()))
              result = root;
+        else if (root.isLeaf())
+            return null;
         else {
-            for (CategoryNode node : this.children)
+            for (CategoryNode node : root.children)
                 result = search(node, child);
         }
         return result;
@@ -84,6 +105,12 @@ public class CategoryNode implements Serializable{
         }
         else
             return arrayList;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("Category: %s", this.data.toString());
     }
 }
 

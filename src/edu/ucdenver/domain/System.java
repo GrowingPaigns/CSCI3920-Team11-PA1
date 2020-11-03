@@ -1,6 +1,7 @@
 package edu.ucdenver.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class System implements Serializable
@@ -15,6 +16,9 @@ public class System implements Serializable
         orders = new ArrayList<>();
         catalog = new Catalog();
         users.add(new User ("admin", "admin@admin.com", "admin", true));
+        users.get(0).createNewOrder(users.get(0));
+        users.get(0).getOrders().get(0).setStatus(Order.eStatus.FINALIZED);
+        orders.add(users.get(0).getOrders().get(0));
     }
 
     public System (ArrayList<User> users, ArrayList<Order> orders, Catalog catalog)
@@ -78,4 +82,29 @@ public class System implements Serializable
     }
 
     public Catalog getCatalog () {return this.catalog;}
+
+    public ArrayList<Order> getFinalizedOrders ()
+    {
+        ArrayList<Order> finalizedOrders = new ArrayList<>();
+
+        for (Order o: orders)
+        {
+            if (o.getStatus() == Order.eStatus.FINALIZED)
+                finalizedOrders.add(o);
+        }
+        return finalizedOrders;
+    }
+
+    public ArrayList<Order> getFinalizedOrders (LocalDate[] period)
+    {
+        ArrayList<Order> finalizedOrders = new ArrayList<>();
+
+        for (Order o: orders)
+        {
+            if (o.getStatus() == Order.eStatus.FINALIZED && o.getDateFinalized().isAfter(period[0]) &&
+                    o.getDateFinalized().isBefore(period[1]))
+                finalizedOrders.add(o);
+        }
+        return finalizedOrders;
+    }
 }

@@ -3,6 +3,7 @@ package edu.ucdenver.server;
 import java.io.*;
 import java.lang.System;
 import java.net.Socket;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import edu.ucdenver.client.Request;
@@ -129,7 +130,22 @@ public class ClientWorker implements Runnable
                 objectOutputStream.flush();
                 objectOutputStream.reset();
                 break;
-            }
+            case "RC":
+                objectOutputStream.writeUnshared(this.system.getCatalog().removeCategory((Category) clientMessage.getMessage()));
+                objectOutputStream.flush();
+                objectOutputStream.reset();
+                break;
+            case "SD":
+                objectOutputStream.writeUnshared(this.system.getCatalog().setDefaultCategory((Category) clientMessage.getMessage()));
+                objectOutputStream.flush();
+                objectOutputStream.reset();
+                break;
+            case "FOD":
+                objectOutputStream.writeUnshared(this.system.getFinalizedOrders((LocalDate[]) clientMessage.getMessage()));
+                objectOutputStream.flush();
+                objectOutputStream.reset();
+                break;
+         }
     }
 
 

@@ -500,4 +500,74 @@ public class Client
         }
         return success;
     }
+
+    public boolean removeCategory(Category selectedItem) {
+        boolean success = false;
+        Request request = new Request();
+
+        if (this.user.isAdmin())
+        {
+            String action = "RC|";
+            request.setAction(action);
+            boolean response = false;
+
+            try
+            {
+                request.setMessage(selectedItem);
+                response = (boolean) this.sendRequest(request);
+            }
+            catch (IOException | ClassNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
+            if (response)
+                success = true;
+        }
+        return success;
+    }
+
+    public boolean setDefaultCategory(Category selectedItem) {
+        boolean success = false;
+        Request request = new Request();
+
+        if (this.user.isAdmin())
+        {
+            String action = "SD|";
+            request.setAction(action);
+            boolean response = false;
+
+            try
+            {
+                request.setMessage(selectedItem);
+                response = (boolean) this.sendRequest(request);
+            }
+            catch (IOException | ClassNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
+            if (response)
+                success = true;
+        }
+        return success;
+    }
+
+    public ArrayList<Order> getFinalizedOrderByDate(LocalDate date1, LocalDate date2) {
+        ArrayList<Order> orders = null;
+        Request request = new Request("FOD");
+        //String request = "FU";
+        LocalDate[] period = {date1, date2};
+        request.setMessage(period);
+        try
+        {
+            orders = (ArrayList<Order>)this.sendRequest(request);
+        }
+        catch(IOException | ClassNotFoundException ioe)
+        {
+            ioe.printStackTrace();
+        }
+
+        return orders;
+    }
 }

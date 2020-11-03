@@ -50,6 +50,8 @@ public class User implements Serializable {
         this.admin = admin;
     }
 
+    public ArrayList<Order> getOrders (){return this.orders;}
+
     public ArrayList<Order> getFinalizedOrders() {
         //returns arraylist of all finalized orders
         ArrayList<Order> finalizedOrders = new ArrayList<Order>();

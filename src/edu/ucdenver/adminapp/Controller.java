@@ -2,6 +2,8 @@ package edu.ucdenver.adminapp;
 
 import edu.ucdenver.client.Client;
 import edu.ucdenver.domain.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -79,11 +81,20 @@ public class Controller {
     public TextField txtCategoryID;
     public TextField txtCategoryName;
     public TextArea txtCategoryDescription;
-    public TextField txtRemoveCategoryID;
-    public ComboBox<String> comboDefaultCategory;
+    public ComboBox<Category> comboDefaultCategory;
     public Button btnAddCategory;
     public ComboBox<Category> comboParentCategory;
     public Tab tabCategoryManagement;
+    public ListView<Category> lstRemoveCategory;
+    public Button btnRemoveCategory;
+
+    //Order management
+    public ListView<User> lstUsersOrders;
+    public ListView<Order> lstOrders;
+    public DatePicker dpOrderSearchDate1;
+    public DatePicker dpOrderSearchDate2;
+    public Button btnSearchOrderByDate;
+    public Tab tabOrderManagement;
 
 
     public Controller()
@@ -97,6 +108,9 @@ public class Controller {
         this.comboProductType = new ComboBox<>();
         this.comboCellphoneOS = new ComboBox<>();
         this.comboParentCategory = new ComboBox();
+        this.lstRemoveCategory = new ListView<>();
+        this.lstUsersOrders = new ListView<>();
+        this.lstOrders = new ListView<>();
     }
 
     public void initialize ()
@@ -104,6 +118,13 @@ public class Controller {
         String[] types = {"Home Product", "Electronic", "Cellphone", "Computer", "Book"};
         this.comboProductType.setItems(FXCollections.observableArrayList(types));
         this.comboCellphoneOS.setItems((FXCollections.observableArrayList("iOS", "Android")));
+
+        this.lstUsersOrders.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<User>() {
+            @Override
+            public void changed(ObservableValue<? extends User> observable, User oldValue, User newValue) {
+                lstOrders.setItems(FXCollections.observableArrayList(newValue.getFinalizedOrders()));
+            }
+        });
     }
 
 
@@ -220,9 +241,6 @@ public class Controller {
         else if (this.tabProductManagement.isSelected())
         {
             TreeItem<Category> root = createTreeviewStructure(AdminApp.client.getCategories());
-//            TreeItem<Category> newItem = new TreeItem<>();
-//            newItem.setValue(new Category("Me", "me", "me"));
-//            root.getChildren().add(newItem);
             treeProductCategories.setRoot(root);
 
             lstRemoveProducts.setItems(FXCollections.observableArrayList(AdminApp.client.fetchProducts()));
@@ -233,6 +251,14 @@ public class Controller {
             CategoryNode categories = AdminApp.client.getCategories();
             ArrayList<Category> arrayList = categories.toArrayList(categories);
             comboParentCategory.setItems(FXCollections.observableArrayList(arrayList));
+            lstRemoveCategory.setItems(FXCollections.observableArrayList(arrayList));
+            comboDefaultCategory.setItems(FXCollections.observableArrayList(arrayList));
+        }
+        else if (this.tabOrderManagement.isSelected())
+        {
+            observableListUsers.setAll(AdminApp.client.fetchUsers());
+            lstUsersOrders.setItems(observableListUsers);
+            lstUsersOrders.refresh();
         }
     }
 
@@ -531,6 +557,44 @@ public class Controller {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Fill out all fields");
             alert.show();
         }
+    }
+
+    public void removeCategory(ActionEvent actionEvent) {
+        if (AdminApp.client.removeCategory(lstRemoveCategory.getSelectionModel().getSelectedItem()))
+        {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Product Removed Successfully");
+            alert.show();
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "That Category no longer exists in the system");
+            alert.show();
+        }
+    }
+
+    public void setDefaultCategory(ActionEvent actionEvent) {
+        if (AdminApp.client.setDefaultCategory(comboDefaultCategory.getSelectionModel().getSelectedItem()))
+        {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Default Category Set.");
+            alert.show();
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "That Category no longer exists in the system");
+            alert.show();
+        }
+    }
+
+    public void searchOrderByDate(ActionEvent actionEvent) {
+        if (dpOrderSearchDate1.getValue() != null && dpOrderSearchDate2.getValue() != null){
+            lstOrders.setItems(FXCollections.observableArrayList(AdminApp.client.getFinalizedOrderByDate(dpOrderSearchDate1.getValue(),
+                    dpOrderSearchDate2.getValue())));
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Fill out all fields.");
+            alert.show();
+        }
+
     }
 
     public void promptAdditionalInformation(String fxml) throws IOException {

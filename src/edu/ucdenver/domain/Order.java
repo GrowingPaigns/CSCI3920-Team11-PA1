@@ -1,10 +1,11 @@
 package edu.ucdenver.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 
-public class Order {
+public class Order implements Serializable {
     enum eStatus {IN_PROCESS, FINALIZED}
 
     //attributes
@@ -87,6 +88,12 @@ public class Order {
             //order will be removed from "orders" in System
 
         }
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("Order Number: %d, Status: %s", orderNumber, status.toString());
     }
 
 }

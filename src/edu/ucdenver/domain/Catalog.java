@@ -31,10 +31,16 @@ public class Catalog
     }
 
     public Category getDefaultCategory() {return this.defaultCategory;}
-    public void setDefaultCategory(Category defaultCategory){
-        this.categoryTree.setParent(defaultCategory);
-        this.categoryTree = this.categoryTree.getParent();
-        this.defaultCategory = categoryTree.getData();
+    public boolean setDefaultCategory(Category defaultCategory){
+        boolean success = false;
+        CategoryNode nodeToMakeDefault = this.categoryTree.search(this.categoryTree, defaultCategory);
+        if (nodeToMakeDefault != null) {
+            this.categoryTree.removeNode(nodeToMakeDefault.getData());
+            this.categoryTree.setData(nodeToMakeDefault.getData());
+            this.defaultCategory = categoryTree.getData();
+            success = true;
+        }
+        return success;
     }
 
     public boolean addProduct(Product product)
@@ -104,11 +110,22 @@ public class Catalog
     }
     public boolean removeCategory (Category category) {
         boolean success = false;
-        CategoryNode nodeToRemove = this.categoryTree.search(this.categoryTree, category);
-        if (nodeToRemove != null) {
-            for (CategoryNode node: nodeToRemove.getChildren())
-                node.setParent(node.getParent());
-            nodeToRemove.removeParent();
+        if (category.getId().equals("0"))
+            return false;
+        if (this.categoryTree.removeNode(category))
+        {
+            for (Product p: products)
+            {
+                boolean hasDefault = false;
+                for (Category c: p.categories) {
+                    if (c.getId().equals(category.getId()))
+                        p.categories.remove(c);
+                    if (c.getId().equals("0"))
+                        hasDefault = true;
+                }
+                if (!hasDefault)
+                    p.categories.add(this.defaultCategory);
+            }
             success = true;
         }
         return success;
