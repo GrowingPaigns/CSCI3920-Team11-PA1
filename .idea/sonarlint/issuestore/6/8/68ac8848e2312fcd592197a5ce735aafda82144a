@@ -1,0 +1,11 @@
+
+L
+java:S20936"*Change this "try" to a try-with-resources.(ç£êúÿÿÿÿ8ìõ—«×.
+S	java:S106,"9Replace this use of System.out or System.err by a logger.(ºõ¼°ùÿÿÿÿ
+Y
+java:S1128	"7Remove this unused import 'edu.ucdenver.client.Client'.(Ø¨¯çûÿÿÿÿ8ÑÆ‘«×.
+>
+java:S2189:""Add an end condition to this loop.(¤èÄ78ÑÆ‘«×.
+N	java:S106)"9Replace this use of System.out or System.err by a logger.(æÉƒ
+W
+java:S1141<"5Extract this nested try block into a separate method.(ç£êúÿÿÿÿ8ÑÆ‘«×.

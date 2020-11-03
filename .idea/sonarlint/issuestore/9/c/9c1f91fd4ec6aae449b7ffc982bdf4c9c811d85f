@@ -1,0 +1,23 @@
+
+N	java:S106Y"9Replace this use of System.out or System.err by a logger.(îğ½
+L
+java:S2093"*Change this "try" to a try-with-resources.(ç£êúÿÿÿÿ8”³µ«×.
+>
+java:S2189H""Add an end condition to this loop.(¤èÄ78ƒÖûª×.
+l
+java:S2259."OA "NullPointerException" could be thrown; "objectInputStream" is nullable here.(¨ûÌĞ8ú²¹«×.
+k
+java:S2259%"IA "NullPointerException" could be thrown; "inputStream" is nullable here.(¶ò†Áşÿÿÿÿ8€µ¸«×.
+S	java:S106Z"9Replace this use of System.out or System.err by a logger.(¡è¢Àıÿÿÿÿ
+L
+java:S2093p"*Change this "try" to a try-with-resources.(ç£êúÿÿÿÿ8Üø¯«×.
+f
+java:S1301_"KReplace this "switch" statement by "if" statements to increase readability.(ãËûÿÿÿÿ
+p
+java:S2259~"NA "NullPointerException" could be thrown; "fileOutputStream" is nullable here.(İ˜úåùÿÿÿÿ8˜ı°«×.
+s
+java:S2259‡"PA "NullPointerException" could be thrown; "objectOutputStream" is nullable here.(µÚıçøÿÿÿÿ8ƒ²´«×.
+<	java:S131_""Add a default case to this switch.(ãËûÿÿÿÿ
+j
+java:S2118t"MMake the "edu.ucdenver.server.Server" class "Serializable" or don't write it.(İ¯¡É8ÃÃ­«×.
+S	java:S106X"9Replace this use of System.out or System.err by a logger.(„µÄ›ıÿÿÿÿ

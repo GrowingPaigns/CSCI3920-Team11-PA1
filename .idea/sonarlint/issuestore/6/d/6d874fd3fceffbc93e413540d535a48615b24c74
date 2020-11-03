@@ -1,0 +1,24 @@
+
+P
+java:S1068"5Remove this unused "keepRunningClient" private field.(à´¤Íÿÿÿÿÿ
+N
+java:S1144&"3Remove this unused private "getInputStream" method.(¶£×Ãÿÿÿÿÿ
+O
+java:S11443"9Remove this unused private "processClientRequest" method.(Öáóè
+J
+java:S1144!"4Remove this unused private "getOutputStream" method.(çµÈÁ
+N	java:S106+"9Replace this use of System.out or System.err by a logger.(öëâŽ
+œ
+java:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ÿŸ¾Ðüÿÿÿÿ
+—
+java:S11863"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Öáóè
+‚
+java:S11303"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(Öáóè
+K
+java:S1144-"0Remove this unused private "sendMessage" method.(‚Ó¡­ûÿÿÿÿ
+P
+java:S11448":Remove this unused private "closeClientConnection" method.(Ã²´ƒ
+L
+java:S1068"*Remove this unused "system" private field.(–áãÌýÿÿÿÿ8˜Ú‰«×.
+Y
+java:S1128"7Remove this unused import 'edu.ucdenver.domain.System'.(‘¥‡¿ÿÿÿÿÿ8û® «×.
