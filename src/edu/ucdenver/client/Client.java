@@ -2,6 +2,7 @@ package edu.ucdenver.client;
 
 import apple.laf.JRSUIUtils;
 import edu.ucdenver.domain.*;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
 import java.io.*;
@@ -128,6 +129,7 @@ public class Client
         //this.output.println(request);
         this.objectOutputStream.writeUnshared(request);
         objectOutputStream.flush();
+        objectOutputStream.reset();
         displayMessage("CLIENT >> " + request);
         //String srvResponse = this.input.readLine();
         Object srvResponse = this.objectInputStream.readUnshared();
@@ -209,7 +211,9 @@ public class Client
         try
         {
             categories = (CategoryNode) this.sendRequest(request);
-            System.out.println(categories.getData());
+            ArrayList<Category> arrayList = categories.toArrayList(categories);
+            for (Category c: arrayList)
+                System.out.println(c);
         }
         catch (IOException | ClassNotFoundException e)
         {
@@ -458,6 +462,32 @@ public class Client
             try
             {
                 request.setMessage(new Category (id, name, description, parent));
+                response = (boolean) this.sendRequest(request);
+            }
+            catch (IOException | ClassNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
+            if (response)
+                success = true;
+        }
+        return success;
+    }
+
+    public boolean removeProduct(Product selectedItem) {
+        boolean success = false;
+        Request request = new Request();
+
+        if (this.user.isAdmin())
+        {
+            String action = "RP|";
+            request.setAction(action);
+            boolean response = false;
+
+            try
+            {
+                request.setMessage(selectedItem);
                 response = (boolean) this.sendRequest(request);
             }
             catch (IOException | ClassNotFoundException e)

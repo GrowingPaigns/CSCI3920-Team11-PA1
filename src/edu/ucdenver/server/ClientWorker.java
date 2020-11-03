@@ -1,14 +1,12 @@
 package edu.ucdenver.server;
 
 import java.io.*;
+import java.lang.System;
 import java.net.Socket;
 import java.util.ArrayList;
 
 import edu.ucdenver.client.Request;
-import edu.ucdenver.domain.HomeProduct;
-import edu.ucdenver.domain.Product;
-import edu.ucdenver.domain.System;
-import edu.ucdenver.domain.User;
+import edu.ucdenver.domain.*;
 
 
 public class ClientWorker implements Runnable
@@ -84,6 +82,7 @@ public class ClientWorker implements Runnable
                     response = "Login Successful";
                     objectOutputStream.writeUnshared(user);
                     objectOutputStream.flush();
+                    objectOutputStream.reset();
                 } else
                     response = "Incorrect Username or Password";
                 break;
@@ -91,26 +90,45 @@ public class ClientWorker implements Runnable
                 response = this.system.createNewUser(arguments[1], arguments[2], arguments[3], Boolean.parseBoolean(arguments[4]));
                 objectOutputStream.writeUnshared(response);
                 objectOutputStream.flush();
+                objectOutputStream.reset();
                 break;
             case "FU":
                 ArrayList<User> users = this.system.getUsers();
                 objectOutputStream.writeUnshared(users);
                 objectOutputStream.flush();
+                objectOutputStream.reset();
                 break;
             case "FP":
                 ArrayList<Product> products = this.system.getCatalog().getProducts();
                 objectOutputStream.writeUnshared(products);
                 objectOutputStream.flush();
+                objectOutputStream.reset();
                 break;
             case "GC":
+                CategoryNode categories = this.system.getCatalog().getCategoryTree();
+                ArrayList<Category> arrayList = categories.toArrayList(categories);
+                for (Category c: arrayList)
+                    System.out.println(c);
                 objectOutputStream.writeUnshared(this.system.getCatalog().getCategoryTree());
                 objectOutputStream.flush();
+                objectOutputStream.reset();
                 break;
             case "AP":
                 objectOutputStream.writeUnshared(this.system.getCatalog().addProduct((Product) clientMessage.getMessage()));
                 objectOutputStream.flush();
+                objectOutputStream.reset();
                 break;
-
+            case "RP":
+                objectOutputStream.writeUnshared(this.system.getCatalog().removeProduct((Product)clientMessage.getMessage()));
+                objectOutputStream.flush();
+                objectOutputStream.reset();
+                break;
+            case "AC":
+                objectOutputStream.writeUnshared(this.system.getCatalog().addCategory((Category)clientMessage.getMessage(),
+                        ((Category) clientMessage.getMessage()).getParentCategory()));
+                objectOutputStream.flush();
+                objectOutputStream.reset();
+                break;
             }
     }
 

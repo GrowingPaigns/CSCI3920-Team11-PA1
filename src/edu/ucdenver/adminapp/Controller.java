@@ -220,9 +220,9 @@ public class Controller {
         else if (this.tabProductManagement.isSelected())
         {
             TreeItem<Category> root = createTreeviewStructure(AdminApp.client.getCategories());
-            TreeItem<Category> newItem = new TreeItem<>();
-            newItem.setValue(new Category("Me", "me", "me"));
-            root.getChildren().add(newItem);
+//            TreeItem<Category> newItem = new TreeItem<>();
+//            newItem.setValue(new Category("Me", "me", "me"));
+//            root.getChildren().add(newItem);
             treeProductCategories.setRoot(root);
 
             lstRemoveProducts.setItems(FXCollections.observableArrayList(AdminApp.client.fetchProducts()));
@@ -319,7 +319,16 @@ public class Controller {
     }
 
     public void removeProduct(ActionEvent actionEvent) {
-        //AdminApp.client.removeProduct(lstRemoveProducts.getSelectionModel().getSelectedItems());
+        if (AdminApp.client.removeProduct(lstRemoveProducts.getSelectionModel().getSelectedItem()))
+        {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Product Removed Successfully");
+            alert.show();
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "That product no longer exists in the system");
+            alert.show();
+        }
     }
 
     public void addHomeProduct(ActionEvent actionEvent)

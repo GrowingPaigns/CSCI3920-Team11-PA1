@@ -51,9 +51,10 @@ public class Catalog
     public boolean removeProduct (Product product)
     {
         boolean success = false;
-        if (searchProduct(product) != null) {
+        Product productToRemove = searchProduct(product);
+        if (productToRemove != null) {
             success = true;
-            this.products.remove(product);
+            this.products.remove(productToRemove);
         }
         return success;
     }
@@ -80,7 +81,7 @@ public class Catalog
         {
             if (p.getId().equals(product.getId()))
             {
-                searchResults = product;
+                searchResults = p;
             }
         }
 
@@ -90,11 +91,13 @@ public class Catalog
     public CategoryNode getCategoryTree () {return this.categoryTree;}
 
     public void addCategory (Category category) {this.categoryTree.addChild(category);}
-    public boolean addCategory (Category parentCategory, Category childCategory) {
+    public boolean addCategory (Category childCategory, Category parentCategory) {
         boolean success = false;
         CategoryNode parent = this.categoryTree.search(this.categoryTree, parentCategory);
         if (parent != null) {
-            parent.addChild(childCategory);
+            CategoryNode nodeToAdd = new CategoryNode(childCategory);
+            parent.addChild(nodeToAdd);
+            nodeToAdd.setParent(parent);
             success = true;
         }
         return success;

@@ -30,8 +30,8 @@ public class CategoryNode implements Serializable{
     public void addChild (Category data)
     {
         CategoryNode child = new CategoryNode(data);
-        child.setParent(this);
-        this.children.add(child);
+        //child.setParent(this);
+        this.addChild(child);
     }
 
     public Category getData(){return this.data;}
@@ -41,7 +41,7 @@ public class CategoryNode implements Serializable{
 
     public CategoryNode getParent(){return this.parent;}
     public void setParent(CategoryNode parent){
-        parent.addChild(this);
+        //parent.addChild(this);
         this.parent = parent;
     }
 
