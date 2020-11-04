@@ -1,14 +1,18 @@
 package edu.ucdenver.catalogapp;
 
+import edu.ucdenver.domain.Category;
+import edu.ucdenver.domain.CategoryNode;
+import edu.ucdenver.domain.Product;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class CatalogController {
     //buttons
@@ -25,16 +29,26 @@ public class CatalogController {
     public TextField txtUsername;
     public PasswordField txtPassword;
 
-    public void clientLogin(ActionEvent actionEvent) {
-        if (txtUsername.getText() != null && txtPassword.getText() != null) {
-            try {
-                changeScene("catalogApp");
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
+    //Search Tab
+    public Tab tabSearch;
+    public Button btnSearch;
+    public TextField searchText;
+    public ListView<Product> lstProducts;
+    public ListView<String> lstProductDetails;
+
+    //Browse Tab
+    public Tab tabBrowse;
+    public TreeView<Category> productCategories;
+    
+
+    //Shopping Tab
+    public Tab tabShop;
+
+    public CatalogController(){
+        this.lstProducts = new ListView<>();
+    }
+
+    public void initialize(){
     }
 
     public void changeScene(String fxml) throws IOException {
@@ -91,5 +105,42 @@ public class CatalogController {
             txtIP.clear();
             alert.show();
         }
+    }
+
+    public void loadViews(Event event) {
+        if(this.tabSearch.isSelected()){
+
+        }else if (this.tabBrowse.isSelected()){
+            TreeItem<Category> root = createTreeViewStructure(CatalogApp.client.getCategories());
+            productCategories.setRoot(root);
+        }else if (this.tabShop.isSelected()){
+
+        }
+    }
+
+    private TreeItem<Category> createTreeViewStructure(CategoryNode categories) {
+        TreeItem<Category> root = new TreeItem<>();
+        root.setValue(categories.getData());
+        if(!categories.isLeaf()){
+            for(CategoryNode node: categories.getChildren())
+                root.getChildren().add(createTreeViewStructure(node));
+            return root;
+        }else
+            return root;
+    }
+
+    public void searchCatalog(ActionEvent actionEvent) {
+        ArrayList<Product> allProducts = CatalogApp.client.fetchProducts();
+        ObservableList<Product> prodList = FXCollections.observableArrayList();
+        if(!this.searchText.getText().isEmpty()){
+            String key = this.searchText.getText();
+            for(Product prod: allProducts){
+                if(key.equals(prod.getId()) || key.equals(prod.getName()) || key.equals(prod.getBrandName()) || key.equals(prod.getDescription())){
+                    prodList.add(prod);
+                }
+            }
+        }
+        this.searchText.clear();
+        lstProducts.setItems(prodList);
     }
 }
