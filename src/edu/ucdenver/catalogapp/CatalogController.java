@@ -1,6 +1,5 @@
 package edu.ucdenver.catalogapp;
 
-import edu.ucdenver.adminapp.AdminApp;
 import edu.ucdenver.domain.Category;
 import edu.ucdenver.domain.CategoryNode;
 import edu.ucdenver.domain.Product;
@@ -14,7 +13,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 
-import javax.swing.text.AbstractDocument;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -44,19 +42,16 @@ public class CatalogController {
     public Tab tabBrowse;
     public TreeView<Category> productCategories;
     public ListView<Product> browseLstProducts;
+    
 
     //Shopping Tab
     public Tab tabShop;
 
-
     public CatalogController(){
         this.lstProducts = new ListView<>();
-        this.productCategories = new TreeView<>();
-        this.productCategories.setShowRoot(true);
     }
 
     public void initialize(){
-
         this.productCategories.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<Category>>() {
             @Override
             public void changed(ObservableValue<? extends TreeItem<Category>> observable, TreeItem<Category> oldValue, TreeItem<Category> newValue) {
@@ -122,12 +117,13 @@ public class CatalogController {
     }
 
     public void loadViews(Event event) {
+        ObservableList<Product> observableProducts = FXCollections.observableArrayList();
+        ObservableList<String> observableProductDetails = FXCollections.observableArrayList();
         if(this.tabSearch.isSelected()){
-
+            lstProducts.setItems(FXCollections.observableArrayList(CatalogApp.client.fetchProducts()));
         }else if (this.tabBrowse.isSelected()){
             TreeItem<Category> root = createTreeViewStructure(CatalogApp.client.getCategories());
-            this.productCategories.setRoot(root);
-            this.productCategories.refresh();
+            productCategories.setRoot(root);
         }else if (this.tabShop.isSelected()){
 
         }
@@ -147,6 +143,7 @@ public class CatalogController {
     public void searchCatalog(ActionEvent actionEvent) {
         ArrayList<Product> allProducts = CatalogApp.client.fetchProducts();
         ObservableList<Product> prodList = FXCollections.observableArrayList();
+
         if(!this.searchText.getText().isEmpty()){
             String key = this.searchText.getText();
             for(Product prod: allProducts){
@@ -157,5 +154,14 @@ public class CatalogController {
         }
         this.searchText.clear();
         lstProducts.setItems(prodList);
+
+        lstProducts.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Product>() {
+            @Override
+            public void changed(ObservableValue<? extends Product> observable, Product oldValue, Product newValue) {
+                ObservableList<String> toDisplay = FXCollections.observableArrayList(newValue.toString());
+                lstProductDetails.setItems(toDisplay);
+            }
+        });
     }
 }
+
