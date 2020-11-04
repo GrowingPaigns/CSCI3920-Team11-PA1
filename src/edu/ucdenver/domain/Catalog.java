@@ -133,4 +133,15 @@ public class Catalog implements Serializable
     }
 
     public ArrayList<Product> getProducts(){return this.products;}
+    public ArrayList<Product> getProductsUnderCategory(Category category){
+        ArrayList<Product> productsUnderCategory = new ArrayList();
+
+        for (Product p: this.products) {
+            for (Category c : p.categories) {
+                if (c.getId().equals(category.getId()))
+                    productsUnderCategory.add(p);
+            }
+        }
+        return productsUnderCategory;
+    }
 }

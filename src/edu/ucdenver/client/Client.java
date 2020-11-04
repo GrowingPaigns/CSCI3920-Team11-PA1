@@ -595,4 +595,22 @@ public class Client
         }
         return saved;
     }
+
+    public ArrayList<Product> fetchProductsByCategory(Category value) {
+        ArrayList<Product> products = null;
+        Request request = new Request("FPC");
+        //String request = "FP";
+        request.setMessage(value);
+
+        try
+        {
+            products = (ArrayList<Product>)this.sendRequest(request);
+        }
+        catch(IOException | ClassNotFoundException ioe)
+        {
+            ioe.printStackTrace();
+        }
+
+        return products;
+    }
 }

@@ -1,8 +1,11 @@
 package edu.ucdenver.catalogapp;
 
+import edu.ucdenver.adminapp.AdminApp;
 import edu.ucdenver.domain.Category;
 import edu.ucdenver.domain.CategoryNode;
 import edu.ucdenver.domain.Product;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 
+import javax.swing.text.AbstractDocument;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -39,16 +43,26 @@ public class CatalogController {
     //Browse Tab
     public Tab tabBrowse;
     public TreeView<Category> productCategories;
-    
+    public ListView<Product> browseLstProducts;
 
     //Shopping Tab
     public Tab tabShop;
 
+
     public CatalogController(){
         this.lstProducts = new ListView<>();
+        this.productCategories = new TreeView<>();
+        this.productCategories.setShowRoot(true);
     }
 
     public void initialize(){
+
+        this.productCategories.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<Category>>() {
+            @Override
+            public void changed(ObservableValue<? extends TreeItem<Category>> observable, TreeItem<Category> oldValue, TreeItem<Category> newValue) {
+                browseLstProducts.setItems(FXCollections.observableArrayList(CatalogApp.client.fetchProductsByCategory(newValue.getValue())));
+            }
+        });
     }
 
     public void changeScene(String fxml) throws IOException {
@@ -112,7 +126,8 @@ public class CatalogController {
 
         }else if (this.tabBrowse.isSelected()){
             TreeItem<Category> root = createTreeViewStructure(CatalogApp.client.getCategories());
-            productCategories.setRoot(root);
+            this.productCategories.setRoot(root);
+            this.productCategories.refresh();
         }else if (this.tabShop.isSelected()){
 
         }

@@ -150,6 +150,11 @@ public class ClientWorker implements Runnable
                 objectOutputStream.flush();
                 objectOutputStream.reset();
                 break;
+            case "FPC":
+                objectOutputStream.writeUnshared(this.system.getCatalog().getProductsUnderCategory((Category) clientMessage.getMessage()));
+                objectOutputStream.flush();
+                objectOutputStream.reset();
+                break;
          }
     }
 
