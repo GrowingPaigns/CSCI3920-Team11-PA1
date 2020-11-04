@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="544.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ucdenver.catalogapp.CatalogController">
+   <children>
+      <TabPane prefHeight="540.0" prefWidth="720.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab fx:id="tabSearch" onSelectionChanged="#loadViews" text="Search">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane layoutX="58.0" layoutY="117.0" prefHeight="131.0" prefWidth="247.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="10.0" prefWidth="159.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Search By Text: " textFill="#352e92">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="searchText" prefHeight="25.0" prefWidth="224.0" promptText="Enter Text Here" GridPane.rowIndex="1" />
+                              <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#searchCatalog" text="Search" textFill="#352e92" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </GridPane>
+                        <ListView fx:id="lstProducts" layoutX="333.0" layoutY="135.0" prefHeight="147.0" prefWidth="336.0" />
+                        <Label layoutX="333.0" layoutY="107.0" text="Product List" textFill="#352e92">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="57.0" layoutY="272.0" text="Product Details" textFill="#352e94">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <ListView fx:id="lstProductDetails" layoutX="57.0" layoutY="302.0" prefHeight="185.0" prefWidth="612.0" />
+                        <Label layoutX="13.0" layoutY="14.0" text="Search for Product..." textFill="#271f7c">
+                           <font>
+                              <Font size="38.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="tabBrowse" onSelectionChanged="#loadViews" text="Browse">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="btnBack" layoutX="194.0" layoutY="453.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="80.0" text="Back" />
+                        <Button fx:id="btnExit" layoutX="299.0" layoutY="453.0" mnemonicParsing="false" onAction="#exitApp" prefHeight="25.0" prefWidth="106.0" text="Exit" />
+                        <Label layoutX="26.0" layoutY="79.0" prefHeight="51.0" prefWidth="193.0" text="Category List" textFill="#352e94">
+                           <font>
+                              <Font size="28.0" />
+                           </font>
+                        </Label>
+                        <ListView fx:id="lstCategries" layoutX="397.0" layoutY="127.0" prefHeight="289.0" prefWidth="299.0" />
+                        <ListView fx:id="browseLstProducts" layoutX="26.0" layoutY="125.0" prefHeight="290.0" prefWidth="308.0">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </ListView>
+                        <Label layoutX="397.0" layoutY="90.0" text="Product List" textFill="#352e94">
+                           <font>
+                              <Font size="28.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="12.0" layoutY="14.0" text="Browse Catalog..." textFill="#232f7c">
+                           <font>
+                              <Font size="38.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab fx:id="tabShop" onSelectionChanged="#loadViews" text="Shopping Cart">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ButtonBar layoutX="84.0" layoutY="457.0" prefHeight="40.0" prefWidth="528.0">
+                          <buttons>
+                              <Button mnemonicParsing="false" text="Buy Order" />
+                              <Button mnemonicParsing="false" text="Add Items" />
+                              <Button mnemonicParsing="false" text="Remove Product" />
+                              <Button mnemonicParsing="false" text="Cancel  Order" />
+                            <Button fx:id="btnPlaceNewOrder" mnemonicParsing="false" onAction="#newOrderScreen" text="New Order" />
+                          </buttons>
+                        </ButtonBar>
+                        <ListView layoutX="28.0" layoutY="114.0" prefHeight="78.0" prefWidth="451.0" />
+                        <Label layoutX="14.0" layoutY="14.0" text="New Order..." textFill="#232383">
+                           <font>
+                              <Font size="38.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="28.0" layoutY="90.0" text="Order Name:" textFill="#211d6b">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <ListView layoutX="28.0" layoutY="238.0" prefHeight="78.0" prefWidth="451.0" />
+                        <Label layoutX="28.0" layoutY="211.0" text="Categories:" textFill="#1f1b68">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <ListView layoutX="28.0" layoutY="372.0" prefHeight="78.0" prefWidth="451.0" />
+                        <Label layoutX="28.0" layoutY="346.0" text="Products:" textFill="#25207c">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <ListView layoutX="497.0" layoutY="52.0" prefHeight="166.0" prefWidth="200.0" />
+                        <ListView layoutX="497.0" layoutY="256.0" prefHeight="200.0" prefWidth="200.0" />
+                        <Label layoutX="497.0" layoutY="22.0" text="Products in Order:" textFill="#1f1b61">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="497.0" layoutY="228.0" text="Product Details:" textFill="#211d6b">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
