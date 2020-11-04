@@ -1,9 +1,10 @@
 package edu.ucdenver.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Catalog
+public class Catalog implements Serializable
 {
     private ArrayList<Product> products;
     private CategoryNode categoryTree;

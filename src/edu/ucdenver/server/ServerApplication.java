@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 
 public class ServerApplication
 {
-    public static final String FILEPATH = Paths.get(".").toAbsolutePath().normalize().toString() + "system_data";
+    public static final String FILEPATH = "./server.ser";
     public static Server load ()
     {
         //Create a edu.ucdenver.server object and attempt to load a System object from a file
@@ -93,12 +93,13 @@ public class ServerApplication
         {
             case "A":
                 server = load();
+                start(server);
                 break;
             case "B":
                 start(server);
                 break;
         }
-        saveSystem(server);
+        //saveSystem(server);
     }
 
     private static void saveSystem(Server server)

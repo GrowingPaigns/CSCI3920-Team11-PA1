@@ -1,5 +1,8 @@
 package edu.ucdenver.domain;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -106,5 +109,33 @@ public class System implements Serializable
                 finalizedOrders.add(o);
         }
         return finalizedOrders;
+    }
+
+    public static final String filename = "./server.ser";
+
+    public boolean saveToFile(){
+        boolean saved = false;
+        ObjectOutputStream oos = null;
+
+        try{
+            oos = new ObjectOutputStream(new FileOutputStream(filename));
+            oos.writeObject(this);
+            saved = true;
+
+        }
+        catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+        finally {
+            if (oos != null) {
+                try {
+                    oos.close();
+                }
+                catch (IOException ioe){
+                    ioe.printStackTrace();
+                }
+            }
+        }
+        return saved;
     }
 }

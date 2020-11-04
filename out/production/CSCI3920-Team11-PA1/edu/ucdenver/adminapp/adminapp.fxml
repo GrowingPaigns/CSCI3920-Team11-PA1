@@ -75,6 +75,7 @@
                         </GridPane>
                         <ListView fx:id="lstUsers" layoutX="72.0" layoutY="304.0" prefHeight="136.0" prefWidth="577.0" />
                         <Label layoutX="72.0" layoutY="280.0" text="Users" />
+                        <Button fx:id="btnSaveSystem" layoutX="417.0" layoutY="459.0" mnemonicParsing="false" onAction="#saveToFile" text="Save System" />
                      </children>
                   </AnchorPane>
             </content>

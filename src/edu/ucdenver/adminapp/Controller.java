@@ -95,6 +95,7 @@ public class Controller {
     public DatePicker dpOrderSearchDate2;
     public Button btnSearchOrderByDate;
     public Tab tabOrderManagement;
+    public Button btnSaveSystem;
 
 
     public Controller()
@@ -617,6 +618,7 @@ public class Controller {
         window.show();
     }
 
-
-
+    public void saveToFile(ActionEvent actionEvent){
+        AdminApp.client.saveApp();
+    }
 }

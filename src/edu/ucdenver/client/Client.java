@@ -167,7 +167,7 @@ public class Client
 
         if (this.user.isAdmin())
         {
-            String request = String.format("CU|%s|%s|%s|%s", displayName, email, password, admin);
+            Request request = new Request(String.format("CU|%s|%s|%s|%s", displayName, email, password, admin));
             String response = null;
 
             try {
@@ -569,5 +569,30 @@ public class Client
         }
 
         return orders;
+    }
+
+    public boolean saveApp() {
+        boolean saved = false;
+        Request request = new Request();
+
+        if (this.user.isAdmin())
+        {
+            String action = "SA|";
+            request.setAction(action);
+            boolean response = false;
+
+            try
+            {
+                response = (boolean) this.sendRequest(request);
+            }
+            catch (IOException | ClassNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
+            if (response)
+                saved = true;
+        }
+        return saved;
     }
 }

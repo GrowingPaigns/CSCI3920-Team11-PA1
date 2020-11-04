@@ -145,6 +145,11 @@ public class ClientWorker implements Runnable
                 objectOutputStream.flush();
                 objectOutputStream.reset();
                 break;
+            case "SA":
+                objectOutputStream.writeUnshared(this.system.saveToFile());
+                objectOutputStream.flush();
+                objectOutputStream.reset();
+                break;
          }
     }
 
